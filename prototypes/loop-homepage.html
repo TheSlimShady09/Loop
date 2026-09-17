@@ -13,7 +13,9 @@
      ============================================================ */
   :root {
     --gold:      #F7DA39;   /* Bright Gold — primary accent                */
-    --beige:     #E3D5B7;   /* Warm Beige — hero ground                    */
+    --beige:     #E3D5B7;   /* Warm Beige — hero ground, promise strip     */
+    --beige-2:   #D6C49F;   /* Deep Beige — cards, tiles, gradients        */
+    --beige-3:   #EFE5D0;   /* Light Beige — alternating section bands     */
     --sunflower: #FFBA4A;   /* Sunflower Gold — hover, badges              */
     --khaki:     #373D20;   /* Dark Khaki — the "black"                    */
     --olive:     #7B562D;   /* Olive Wood — borders, secondary            */
@@ -340,7 +342,8 @@
     z-index: -1;
   }
   .col-card:nth-child(2) { background: var(--olive); }
-  .col-card:nth-child(3) { background: var(--palm); }
+  .col-card:nth-child(3) { background: var(--beige-2); color: var(--khaki); }
+  .col-card:nth-child(3)::after { background: linear-gradient(180deg, transparent 35%, rgba(55,61,32,0.20)); }
   .col-card:nth-child(4) { background: var(--khaki); }
   .col-card:hover { transform: translateY(-4px); background: var(--gold); color: var(--khaki); }
   .col-card__name { font-family: "Anton", sans-serif; text-transform: uppercase; font-size: 1.7rem; }
@@ -419,7 +422,7 @@
     aspect-ratio: 4 / 5;
     display: grid;
     place-items: center;
-    background: var(--tone, var(--palm));
+    background: var(--tone, var(--beige-2));
     overflow: hidden;
   }
   .pcard__media svg { width: 66%; opacity: 0.2; transition: transform 400ms var(--ease-out); }
@@ -434,8 +437,8 @@
     text-transform: uppercase;
     padding: 0.3rem 0.55rem;
     border-radius: 3px;
-    background: var(--palm);
-    color: var(--bg);
+    background: var(--beige-2);
+    color: var(--khaki);
   }
   .badge--best { background: var(--sunflower); color: var(--khaki); }
   .badge--low  { background: var(--olive); color: var(--bg); }
@@ -460,7 +463,7 @@
     aspect-ratio: 1;
     display: grid;
     place-items: center;
-    background: var(--tone, var(--palm));
+    background: var(--tone, var(--beige-2));
     border-radius: var(--radius);
     overflow: hidden;
     text-decoration: none;
@@ -490,7 +493,37 @@
   .footer {
     background: var(--footer-bg);
     color: var(--bg);
-    padding-block: clamp(3rem, 8vw, 5rem) 2rem;
+  }
+  .footer__inner { padding-block: clamp(2.6rem, 7vw, 4.2rem) 2rem; }
+
+  /* promise strip — beige band across the top of the footer */
+  .footer__promise { background: var(--beige); color: var(--khaki); }
+  .footer__promise-grid {
+    list-style: none;
+    margin: 0;
+    padding-block: 1.5rem;
+    display: grid;
+    gap: 1.1rem;
+    grid-template-columns: 1fr;
+  }
+  .footer__promise-grid li { display: grid; gap: 0.1rem; }
+  .footer__promise-grid strong {
+    font-family: "Anton", sans-serif;
+    font-weight: 400;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    font-size: 0.98rem;
+  }
+  .footer__promise-grid span { font-size: 0.78rem; color: #6A6344; }
+
+  /* newsletter band */
+  .footer__cta {
+    display: grid;
+    gap: 1.1rem;
+    align-items: center;
+    padding-bottom: 2.2rem;
+    margin-bottom: 2.4rem;
+    border-bottom: 1px solid rgba(244,237,218,0.14);
   }
   .footer__top {
     display: grid;
@@ -501,8 +534,45 @@
   .footer__brand svg { height: 22px; width: auto; }
   .footer__brand p { font-size: 0.9rem; color: #C9C6A4; }
 
-  .footer__signup h3 { font-size: 1.7rem; margin-bottom: 0.4rem; }
-  .footer__signup p { font-size: 0.88rem; color: #C9C6A4; margin: 0 0 1rem; }
+  .footer__cta h3 { font-size: clamp(1.7rem, 5vw, 2.2rem); margin-bottom: 0.4rem; }
+  .footer__cta p { font-size: 0.88rem; color: #C9C6A4; margin: 0 0 1rem; }
+
+  .footer__contact { font-size: 0.82rem; color: #C9C6A4; line-height: 1.7; }
+  .footer__contact a { color: var(--beige); text-decoration: none; }
+  .footer__contact a:hover { color: var(--gold); }
+
+  .social { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 0.4rem; }
+  .social a {
+    display: inline-block;
+    font-size: 0.72rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    text-decoration: none;
+    padding: 0.35rem 0.65rem;
+    border: 1px solid rgba(244,237,218,0.24);
+    border-radius: 999px;
+    color: #D8D5B6;
+    transition: background-color 180ms var(--ease-out), color 180ms var(--ease-out), border-color 180ms var(--ease-out);
+  }
+  .social a:hover { background: var(--beige); color: var(--khaki); border-color: var(--beige); }
+
+  .footer__pay {
+    margin-top: 2.4rem;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+  }
+  .footer__pay-label { font-size: 0.7rem; letter-spacing: 0.16em; text-transform: uppercase; color: #B4B189; }
+  .paylist { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 0.35rem; }
+  .paylist li {
+    font-size: 0.68rem;
+    letter-spacing: 0.05em;
+    padding: 0.3rem 0.55rem;
+    border-radius: 4px;
+    background: rgba(244,237,218,0.10);
+    color: #D8D5B6;
+  }
   .signup-form { display: flex; gap: 0.5rem; flex-wrap: wrap; }
   .signup-form input {
     flex: 1 1 12rem;
@@ -510,7 +580,7 @@
     padding: 0.8rem 0.9rem;
     border: 2px solid transparent;
     border-radius: var(--radius);
-    background: var(--bg);
+    background: var(--beige-3);
     color: var(--khaki);
     font: inherit;
     font-size: 0.95rem;
@@ -541,6 +611,10 @@
     font-size: 0.78rem;
     color: #B4B189;
   }
+  .footer__bar-right { display: inline-flex; align-items: center; flex-wrap: wrap; gap: 1.1rem; }
+  .footer__cur { letter-spacing: 0.08em; }
+  .totop { text-decoration: none; color: inherit; letter-spacing: 0.08em; }
+  .totop:hover { color: var(--gold); }
   .lang { display: inline-flex; gap: 0.4rem; }
   .lang button {
     background: none;
@@ -554,17 +628,21 @@
   .lang button[aria-pressed="true"] { color: var(--gold); font-weight: 700; }
 
   @media (min-width: 720px) {
-    .footer__top { grid-template-columns: 1.1fr 1fr; }
-    .footer__cols { grid-template-columns: repeat(3, 1fr); }
+    .footer__top { grid-template-columns: 1fr 1fr; }
+    .footer__cta { grid-template-columns: 1fr 1fr; align-items: end; }
+    .footer__promise-grid { grid-template-columns: repeat(2, 1fr); }
   }
   @media (min-width: 1000px) {
-    .footer__top { grid-template-columns: 1fr 1fr 1.2fr; }
+    .footer__top { grid-template-columns: 1.1fr 2.5fr; }
+    .footer__cols { grid-template-columns: repeat(4, 1fr); }
+    .footer__promise-grid { grid-template-columns: repeat(4, 1fr); }
   }
 
   /* ============================================================
      3D product showcase
      ============================================================ */
-  .showcase { background: var(--surface); overflow: hidden; }
+  .showcase { background: var(--beige-3); overflow: hidden; }
+  .band-beige { background: var(--beige-3); }
   .showcase__grid {
     display: grid;
     gap: clamp(1.6rem, 5vw, 3rem);
@@ -588,7 +666,7 @@
     aspect-ratio: 1;
     border-radius: 18px;
     border: 1px solid var(--line);
-    background: radial-gradient(120% 120% at 50% 28%, #F1ECDE, #E2DAC5);
+    background: radial-gradient(120% 120% at 50% 28%, #F2E8D4, #D9C9A6);
     display: grid;
     place-items: center;
     overflow: hidden;
@@ -675,13 +753,9 @@
 <header class="nav" id="nav">
   <div class="wrap nav__inner">
     <a class="nav__logo" href="#main" aria-label="LOOP — home">
-      <!-- wordmark: gold type, cream rope -->
+      <!-- wordmark: gold type, no rope -->
       <svg viewBox="0 0 360 90" role="img" aria-label="LOOP">
         <text x="0" y="70" font-family="Anton, sans-serif" font-size="86" letter-spacing="-3" fill="#F7DA39">LOOP</text>
-        <g fill="none" stroke="#F4EDDA" stroke-width="7" stroke-linecap="round">
-          <path d="M92 30 C 70 8 150 2 170 34 C 186 60 120 78 138 40 C 150 16 210 22 224 50 C 236 74 190 96 150 92" />
-          <path d="M158 22 C 168 44 160 64 150 86" stroke-width="5" />
-        </g>
       </svg>
     </a>
 
@@ -802,7 +876,7 @@
   <!-- ============================================================
        BEST SELLERS
        ============================================================ -->
-  <section id="best" class="reveal">
+  <section id="best" class="reveal band-beige">
     <div class="wrap">
       <div class="section-head">
         <div>
@@ -813,7 +887,7 @@
       </div>
 
       <div class="rail">
-        <a class="pcard" href="#" style="--tone:#8E9843">
+        <a class="pcard" href="#" style="--tone:#D6C49F">
           <div class="pcard__media"><span class="badge badge--best">Bestseller</span><svg aria-hidden="true"><use href="#rope"/></svg></div>
           <div class="pcard__body">
             <span class="pcard__name">The Loop Hoodie</span>
@@ -864,7 +938,7 @@
 
       <div class="ugc-grid">
         <a class="ugc-tile" href="#" style="--tone:#373D20"><svg aria-hidden="true"><use href="#rope"/></svg><span class="ugc-tile__tag">@maya.k — more miles</span></a>
-        <a class="ugc-tile" href="#" style="--tone:#8E9843"><svg aria-hidden="true"><use href="#rope"/></svg><span class="ugc-tile__tag">@t.builds — more layers</span></a>
+        <a class="ugc-tile" href="#" style="--tone:#D6C49F"><svg aria-hidden="true"><use href="#rope"/></svg><span class="ugc-tile__tag">@t.builds — more layers</span></a>
         <a class="ugc-tile" href="#" style="--tone:#F7DA39"><svg aria-hidden="true"><use href="#rope"/></svg><span class="ugc-tile__tag">@runyyz — more mornings</span></a>
         <a class="ugc-tile" href="#" style="--tone:#7B562D"><svg aria-hidden="true"><use href="#rope"/></svg><span class="ugc-tile__tag">@dee — more nights out</span></a>
         <a class="ugc-tile" href="#" style="--tone:#FFBA4A"><svg aria-hidden="true"><use href="#rope"/></svg><span class="ugc-tile__tag">@quietcity — more weekends</span></a>
@@ -878,17 +952,60 @@
      FOOTER
      ============================================================ -->
 <footer class="footer reveal">
-  <div class="wrap">
+
+  <!-- promise strip -->
+  <div class="footer__promise">
+    <ul class="wrap footer__promise-grid">
+      <li>
+        <strong>Free shipping over $150</strong>
+        <span>Standard $12 &middot; Express $22 &middot; CAD</span>
+      </li>
+      <li>
+        <strong>30-day returns</strong>
+        <span>Unworn with tags. Sale items final.</span>
+      </li>
+      <li>
+        <strong>Designed in Canada</strong>
+        <span>Priced in CAD, shipped domestically</span>
+      </li>
+      <li>
+        <strong>Secure checkout</strong>
+        <span>Shop Pay, Apple Pay, all major cards</span>
+      </li>
+    </ul>
+  </div>
+
+  <div class="wrap footer__inner">
+
+    <!-- newsletter -->
+    <div class="footer__cta">
+      <div>
+        <h3>Get on the list</h3>
+        <p>Early access to every drop. No spam &mdash; just first dibs.</p>
+      </div>
+      <form class="signup-form" id="signup" novalidate>
+        <label for="email" class="visually-hidden" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)">Email address</label>
+        <input id="email" type="email" name="email" placeholder="you@email.com" autocomplete="email" required />
+        <button class="btn btn--onkhaki" type="submit">Join</button>
+        <p class="signup-msg" id="signup-msg" role="status" aria-live="polite"></p>
+      </form>
+    </div>
+
     <div class="footer__top">
       <div class="footer__brand">
         <svg viewBox="0 0 360 90" role="img" aria-label="LOOP">
           <text x="0" y="70" font-family="Anton, sans-serif" font-size="86" letter-spacing="-3" fill="#F4EDDA">LOOP</text>
-          <g fill="none" stroke="#F7DA39" stroke-width="7" stroke-linecap="round">
-            <path d="M92 30 C 70 8 150 2 170 34 C 186 60 120 78 138 40 C 150 16 210 22 224 50 C 236 74 190 96 150 92" />
-            <path d="M158 22 C 168 44 160 64 150 86" stroke-width="5" />
-          </g>
         </svg>
         <p>Heavyweight streetwear, designed in Canada. Made for more.</p>
+        <ul class="social">
+          <li><a href="#">Instagram</a></li>
+          <li><a href="#">TikTok</a></li>
+          <li><a href="#">Pinterest</a></li>
+        </ul>
+        <p class="footer__contact">
+          <a href="mailto:hello@loopapparel.ca">hello@loopapparel.ca</a><br />
+          Mon&ndash;Fri, 9&ndash;5 ET &middot; Toronto, ON
+        </p>
       </div>
 
       <nav class="footer__cols" aria-label="Footer">
@@ -899,6 +1016,7 @@
             <li><a href="#">Tees</a></li>
             <li><a href="#">Outerwear</a></li>
             <li><a href="#">Accessories</a></li>
+            <li><a href="#">Gift cards</a></li>
           </ul>
         </div>
         <div>
@@ -907,6 +1025,7 @@
             <li><a href="#">Size chart</a></li>
             <li><a href="#">Shipping &amp; returns</a></li>
             <li><a href="#">Track order</a></li>
+            <li><a href="#">FAQ</a></li>
             <li><a href="#">Contact</a></li>
           </ul>
         </div>
@@ -916,29 +1035,47 @@
             <li><a href="#">Our story</a></li>
             <li><a href="#">Journal</a></li>
             <li><a href="#">Stockists</a></li>
+            <li><a href="#">Careers</a></li>
+            <li><a href="#">Sustainability</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Legal</h4>
+          <ul>
+            <li><a href="#">Privacy policy</a></li>
+            <li><a href="#">Terms of service</a></li>
+            <li><a href="#">Refund policy</a></li>
+            <li><a href="#">Shipping policy</a></li>
+            <li><a href="#">Accessibility</a></li>
           </ul>
         </div>
       </nav>
+    </div>
 
-      <div class="footer__signup">
-        <h3>Get on the list</h3>
-        <p>Early access to every drop. No spam — just first dibs.</p>
-        <form class="signup-form" id="signup" novalidate>
-          <label for="email" class="visually-hidden" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)">Email address</label>
-          <input id="email" type="email" name="email" placeholder="you@email.com" autocomplete="email" required />
-          <button class="btn btn--onkhaki" type="submit">Join</button>
-        </form>
-        <p class="signup-msg" id="signup-msg" role="status" aria-live="polite"></p>
-      </div>
+    <div class="footer__pay">
+      <span class="footer__pay-label">We accept</span>
+      <ul class="paylist">
+        <li>Visa</li>
+        <li>Mastercard</li>
+        <li>Amex</li>
+        <li>Apple Pay</li>
+        <li>Google Pay</li>
+        <li>Shop Pay</li>
+        <li>PayPal</li>
+      </ul>
     </div>
 
     <div class="footer__bar">
-      <span>© 2026 LOOP Apparel Inc. · Made in Canada</span>
-      <span class="lang" aria-label="Language">
-        <button type="button" aria-pressed="true">EN</button>
-        <span aria-hidden="true">|</span>
-        <button type="button" aria-pressed="false">FR</button>
-      </span>
+      <span>&copy; 2026 LOOP Apparel Inc. &middot; Made in Canada</span>
+      <div class="footer__bar-right">
+        <span class="footer__cur">CAD $</span>
+        <span class="lang" aria-label="Language">
+          <button type="button" aria-pressed="true">EN</button>
+          <span aria-hidden="true">|</span>
+          <button type="button" aria-pressed="false">FR</button>
+        </span>
+        <a class="totop" href="#main">Back to top &uarr;</a>
+      </div>
     </div>
   </div>
 </footer>

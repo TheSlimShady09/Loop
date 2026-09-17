@@ -6,7 +6,7 @@ Everything built so far for the LOOP streetwear launch (Canada / CAD).
 LOOP-store/
 ├── prototypes/
 │   ├── loop-homepage.html            Live homepage prototype — full identity,
-│   │                                 rope-loop logo, load animation, scroll
+│   │                                 wordmark logo, load animation, scroll
 │   │                                 reveals, and the 3D hoodie showcase
 │   │                                 (image embedded, no external assets).
 │   └── loop-merchant-dashboard.html  Store analytics dashboard prototype —
@@ -14,7 +14,7 @@ LOOP-store/
 │                                     Inventory / Marketing, sample CAD data.
 │
 ├── brand-assets/
-│   ├── favicon.svg                   Rope mark only, Dark Khaki on Bright Gold.
+│   ├── favicon.svg                   L monogram, beige on Dark Khaki.
 │   ├── logo-white-on-gold.svg        Header — cream wordmark, gold ground.
 │   ├── logo-black-on-gold.svg        Hero / gold sections — khaki wordmark.
 │   └── logo-black-on-white.svg       Footer / cream sections.

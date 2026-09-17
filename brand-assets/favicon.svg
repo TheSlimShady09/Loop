@@ -1,11 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="LOOP rope mark">
-  <rect width="512" height="512" fill="#F7DA39"/>
-  <g fill="none" stroke="#373D20" stroke-linecap="round" stroke-linejoin="round">
-    <path stroke-width="46" d="M256 256
-      C 206 198 122 198 122 256
-      C 122 314 206 314 256 256
-      C 306 198 390 198 390 256
-      C 390 314 306 314 256 256 Z"/>
-    <path stroke-width="34" d="M256 256 C 250 304 250 348 268 388"/>
-  </g>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="LOOP">
+  <rect width="512" height="512" fill="#373D20"/>
+  <path d="M152 108 h74 v230 h134 v66 H152 Z" fill="#E3D5B7"/>
 </svg>
