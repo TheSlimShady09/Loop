@@ -1,3 +1,9 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<link rel="icon" href="../brand-assets/favicon.svg" type="image/svg+xml" />
 <title>LOOP Merchant Dashboard</title>
 <meta name="description" content="Store analytics prototype for LOOP — overview, sales, products, customers, inventory, and marketing, with sample data." />
 
@@ -9,6 +15,8 @@
   :root {
     --gold:      #F7DA39;
     --sunflower: #FFBA4A;
+    --beige:     #E3D5B7;   /* Warm Beige — borrowed from the homepage    */
+    --title:     #8A6A18;   /* Deep Gold — card titles, AA on cream       */
     --khaki:     #33261E;   /* Espresso — the "black"                     */
     --olive:     #7B562D;   /* Olive Wood — chart series 2                */
     --caramel:   #B3822F;   /* Caramel — chart series 3 + positive        */
@@ -41,6 +49,7 @@
       --text:    #F0E6D9;
       --muted:   #A89684;
       --line:    #38291F;
+      --title:   #F7DA39;
     }
   }
   :root[data-theme="dark"] {
@@ -50,6 +59,7 @@
     --text:    #F0E6D9;
     --muted:   #A89684;
     --line:    #38291F;
+    --title:   #F7DA39;
   }
 
   * { box-sizing: border-box; }
@@ -110,8 +120,8 @@
     color: #DCCDBA;
     transition: background-color 150ms var(--ease-out), color 150ms var(--ease-out);
   }
-  .nav button:hover { background: rgba(255,255,255,0.06); color: #fff; }
-  .nav button[aria-current="true"] { background: var(--gold); color: var(--khaki); font-weight: 600; }
+  .nav button:hover { background: rgba(227,213,183,0.12); color: var(--beige); }
+  .nav button[aria-current="true"] { background: var(--beige); color: var(--khaki); font-weight: 600; }
   .nav .dot { width: 7px; height: 7px; border-radius: 50%; background: currentColor; flex: none; opacity: 0.6; }
 
   .sidebar__foot { margin-top: auto; font-size: 0.72rem; color: #A08E7C; padding: 0 0.4rem; }
@@ -189,7 +199,23 @@
     display: flex; align-items: baseline; justify-content: space-between; gap: 0.8rem;
     margin-bottom: 0.9rem; flex-wrap: wrap;
   }
-  .card h2 { font-size: 1.05rem; text-transform: uppercase; letter-spacing: 0.03em; }
+  .card h2 {
+    font-size: 1.15rem;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    color: var(--title);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .card h2::before {
+    content: "";
+    width: 4px;
+    height: 0.95em;
+    border-radius: 2px;
+    background: var(--gold);
+    flex: none;
+  }
   .card .sub { font-size: 0.76rem; color: var(--muted); }
 
   /* ---------- tables ---------- */
@@ -239,6 +265,9 @@
     * { animation-duration: 0.001ms !important; transition-duration: 0.001ms !important; }
   }
 </style>
+</head>
+
+<body>
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
   <symbol id="rope" viewBox="0 0 200 200">
@@ -727,3 +756,6 @@
     }
   })();
 </script>
+
+</body>
+</html>

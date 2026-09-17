@@ -7,22 +7,28 @@ LOOP-store/
 ├── prototypes/
 │   ├── loop-homepage.html            Live homepage prototype — full identity,
 │   │                                 wordmark logo, load animation, scroll
-│   │                                 reveals, and the 3D hoodie showcase
-│   │                                 (image embedded, no external assets).
+│   │                                 reveals, the hero product shot and the
+│   │                                 3D hoodie showcase.
 │   └── loop-merchant-dashboard.html  Store analytics dashboard prototype —
 │                                     Overview / Sales / Products / Customers /
 │                                     Inventory / Marketing, sample CAD data.
 │
 ├── brand-assets/
-│   ├── favicon.svg                   L monogram, beige on Dark Khaki.
+│   ├── favicon.svg                   L monogram, beige on espresso.
 │   ├── logo-white-on-gold.svg        Header — cream wordmark, gold ground.
-│   ├── logo-black-on-gold.svg        Hero / gold sections — khaki wordmark.
+│   ├── logo-black-on-gold.svg        Hero / gold sections — espresso wordmark.
 │   └── logo-black-on-white.svg       Footer / cream sections.
 │
 ├── product-images/
 │   ├── loop-hoodie-gold-2048.png     Higgsfield render, full res (2048²).
-│   └── loop-hoodie-gold-web.jpg      1200px compressed — the one embedded
-│                                     in the homepage 3D showcase.
+│   ├── loop-hoodie-gold-web.jpg      1200px compressed, grey studio ground.
+│   ├── loop-hoodie-cutout.webp       Background removed, sits on any ground.
+│   ├── loop-tee-beige-cutout.webp    Generated, keyed off a green screen.
+│   ├── loop-jacket-khaki-cutout.webp Generated, background removed.
+│   └── loop-beanie-gold-cutout.webp  Generated, background removed.
+│
+├── ugc-images/                       Six generated @loop.wear tiles — miles,
+│                                     layers, mornings, nights, weekends, reps.
 │
 └── shopify/
     ├── loop-shopify-setup.md         Step-by-step build guide: currency,
@@ -31,8 +37,8 @@ LOOP-store/
     │                                 size chart, shipping, taxes, checklist,
     │                                 copy bank.
     └── loop-theme.css                Paste into Shopify Theme settings →
-                                      Custom CSS. Anton headings, khaki nav,
-                                      brand buttons, Palm Leaf / Sunflower badges.
+                                      Custom CSS. Anton headings, espresso nav,
+                                      brand buttons, beige / Sunflower badges.
 ```
 
 ## Open the prototypes
@@ -47,11 +53,11 @@ Hosted versions:
 
 | Token | Hex | Use |
 | --- | --- | --- |
-| Bright Gold | `#F7DA39` | hero, primary accent, favicon ground |
+| Bright Gold | `#F7DA39` | primary accent, logo type |
 | Sunflower Gold | `#FFBA4A` | hover, sale badges |
-| Dark Khaki | `#373D20` | "black" — text, nav, footer |
+| Espresso | `#33261E` | "black" — text, nav, footer |
 | Olive Wood | `#7B562D` | borders, secondary buttons |
-| Palm Leaf | `#8E9843` | new badges, tags |
+| Warm Beige | `#E3D5B7` | hero ground, promise strip, badges |
 | Cream | `#F4EDDA` | "white" — page ground |
 
 - Display type: **Anton** (free stand-in for Extenda). Body: **Inter** (per brief).

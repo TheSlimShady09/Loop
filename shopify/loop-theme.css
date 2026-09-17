@@ -12,9 +12,9 @@
 :root {
   --loop-gold:      #F7DA39;
   --loop-sunflower: #FFBA4A;
-  --loop-khaki:     #373D20;
+  --loop-khaki:     #33261E;
   --loop-olive:     #7B562D;
-  --loop-palm:      #8E9843;
+  --loop-beige:     #E3D5B7;
   --loop-cream:     #F4EDDA;
 
   --loop-ease-out:    cubic-bezier(0.23, 1, 0.32, 1);
@@ -40,7 +40,7 @@ p, li, .product__description, input, textarea, select {
   text-transform: none;
 }
 
-/* --- Sticky nav in Dark Khaki ------------------------------- */
+/* --- Sticky nav in Espresso ------------------------------- */
 .header-wrapper {
   position: sticky;
   top: 0;
@@ -91,24 +91,24 @@ button.button {
   color: var(--loop-cream) !important;
 }
 
-/* --- Product cards: generous cream space, Palm Leaf badges --- */
+/* --- Product cards: generous cream space, beige badges ------- */
 .card-wrapper { transition: transform 200ms var(--loop-ease-out); }
 .card-wrapper:hover { transform: translateY(-5px); }
 
 .card__badge .badge,
 .badge {
-  background: var(--loop-palm) !important;
-  color: var(--loop-cream) !important;
+  background: var(--loop-beige) !important;
+  color: var(--loop-khaki) !important;
   border: none !important;
   border-radius: 3px !important;
   letter-spacing: 0.14em;
   text-transform: uppercase;
   font-size: 0.66rem;
 }
-/* "Sale" badge -> Sunflower; keeps "New" on Palm Leaf */
+/* "Sale" badge -> Sunflower; keeps "New" on beige */
 .badge--sale, .price--on-sale .badge { background: var(--loop-sunflower) !important; color: var(--loop-khaki) !important; }
 
-/* --- Footer in Dark Khaki ---------------------------------- */
+/* --- Footer in Espresso ---------------------------------- */
 .footer { background: var(--loop-khaki); color: var(--loop-cream); }
 .footer a, .footer__list-social .icon { color: var(--loop-cream); }
 .footer a:hover { color: var(--loop-gold); }
