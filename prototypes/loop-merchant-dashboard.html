@@ -9,23 +9,24 @@
   :root {
     --gold:      #F7DA39;
     --sunflower: #FFBA4A;
-    --khaki:     #373D20;
-    --olive:     #7B562D;
-    --palm:      #8E9843;
-    --brick:     #B5462E;   /* semantic: critical / down — earthy red, not in brand set but tuned to it */
+    --khaki:     #33261E;   /* Espresso — the "black"                     */
+    --olive:     #7B562D;   /* Olive Wood — chart series 2                */
+    --caramel:   #B3822F;   /* Caramel — chart series 3 + positive        */
+    --pumpkin:   #D9752B;   /* semantic: warning                          */
+    --brick:     #B5462E;   /* semantic: critical / down                  */
 
-    --bg:      #F1E9D4;     /* warm ground */
+    --bg:      #F3EBDA;     /* warm ground */
     --panel:   #FBF7EC;
     --panel-2: #F5EEDB;
-    --text:    #373D20;
-    --muted:   #6E6B4C;
-    --line:    #E2D8BC;
+    --text:    #33261E;
+    --muted:   #6B5A4A;
+    --line:    #E6DAC6;
 
-    --sidebar-bg: #2F3418;
-    --sidebar-fg: #E8E4C7;
+    --sidebar-bg: #2A1E17;  /* espresso */
+    --sidebar-fg: #EFE3D2;
 
-    --ok:   var(--palm);
-    --warn: var(--sunflower);
+    --ok:   var(--caramel);
+    --warn: var(--pumpkin);
     --bad:  var(--brick);
 
     --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
@@ -34,21 +35,21 @@
 
   @media (prefers-color-scheme: dark) {
     :root:not([data-theme="light"]) {
-      --bg:      #1C1F0C;
-      --panel:   #262B12;
-      --panel-2: #2E3417;
-      --text:    #F1EAD5;
-      --muted:   #ADA983;
-      --line:    #3A4020;
+      --bg:      #17100C;
+      --panel:   #201711;
+      --panel-2: #291E16;
+      --text:    #F0E6D9;
+      --muted:   #A89684;
+      --line:    #38291F;
     }
   }
   :root[data-theme="dark"] {
-    --bg:      #1C1F0C;
-    --panel:   #262B12;
-    --panel-2: #2E3417;
-    --text:    #F1EAD5;
-    --muted:   #ADA983;
-    --line:    #3A4020;
+    --bg:      #17100C;
+    --panel:   #201711;
+    --panel-2: #291E16;
+    --text:    #F0E6D9;
+    --muted:   #A89684;
+    --line:    #38291F;
   }
 
   * { box-sizing: border-box; }
@@ -93,7 +94,7 @@
   .brand { display: flex; align-items: center; gap: 0.6rem; padding: 0.2rem 0.4rem; }
   .brand svg { width: 30px; height: 30px; color: var(--gold); flex: none; }
   .brand b { font-family: "Anton", sans-serif; font-size: 1.3rem; letter-spacing: 0.02em; color: var(--gold); }
-  .brand span { font-size: 0.66rem; letter-spacing: 0.18em; text-transform: uppercase; color: #B7B489; display: block; }
+  .brand span { font-size: 0.66rem; letter-spacing: 0.18em; text-transform: uppercase; color: #BFAE99; display: block; }
 
   .nav { display: flex; flex-direction: column; gap: 2px; }
   .nav button {
@@ -106,14 +107,14 @@
     font-size: 0.86rem;
     font-weight: 500;
     cursor: pointer;
-    color: #D9D5B4;
+    color: #DCCDBA;
     transition: background-color 150ms var(--ease-out), color 150ms var(--ease-out);
   }
   .nav button:hover { background: rgba(255,255,255,0.06); color: #fff; }
   .nav button[aria-current="true"] { background: var(--gold); color: var(--khaki); font-weight: 600; }
   .nav .dot { width: 7px; height: 7px; border-radius: 50%; background: currentColor; flex: none; opacity: 0.6; }
 
-  .sidebar__foot { margin-top: auto; font-size: 0.72rem; color: #9A9770; padding: 0 0.4rem; }
+  .sidebar__foot { margin-top: auto; font-size: 0.72rem; color: #A08E7C; padding: 0 0.4rem; }
 
   /* ---------- topbar ---------- */
   .main { display: flex; flex-direction: column; min-width: 0; }
@@ -303,7 +304,7 @@
             <span class="kpi__value num">$48,210</span>
             <span class="kpi__delta up">▲ 18.4% <span class="note">vs prev 30d</span></span>
             <svg class="kpi__spark" width="100%" height="30" viewBox="0 0 120 30" preserveAspectRatio="none" aria-hidden="true">
-              <polyline fill="none" stroke="var(--palm)" stroke-width="2" points="0,24 12,22 24,25 36,18 48,20 60,14 72,15 84,10 96,12 108,6 120,4"/>
+              <polyline fill="none" stroke="var(--caramel)" stroke-width="2" points="0,24 12,22 24,25 36,18 48,20 60,14 72,15 84,10 96,12 108,6 120,4"/>
             </svg>
           </div>
           <div class="kpi">
@@ -311,7 +312,7 @@
             <span class="kpi__value num">612</span>
             <span class="kpi__delta up">▲ 12.1%</span>
             <svg class="kpi__spark" width="100%" height="30" viewBox="0 0 120 30" preserveAspectRatio="none" aria-hidden="true">
-              <polyline fill="none" stroke="var(--palm)" stroke-width="2" points="0,20 12,22 24,18 36,19 48,15 60,17 72,12 84,14 96,10 108,11 120,8"/>
+              <polyline fill="none" stroke="var(--caramel)" stroke-width="2" points="0,20 12,22 24,18 36,19 48,15 60,17 72,12 84,14 96,10 108,11 120,8"/>
             </svg>
           </div>
           <div class="kpi">
@@ -383,7 +384,7 @@
               </div>
               <div>
                 <div style="display:flex;justify-content:space-between"><span class="note">Orders</span><b class="num">23</b></div>
-                <div class="barlist__track" style="margin-top:4px"><div class="barlist__fill" style="width:66%;background:var(--palm)"></div></div>
+                <div class="barlist__track" style="margin-top:4px"><div class="barlist__fill" style="width:66%;background:var(--caramel)"></div></div>
               </div>
               <div>
                 <div style="display:flex;justify-content:space-between"><span class="note">Sessions</span><b class="num">1,012</b></div>
@@ -432,7 +433,7 @@
             <div class="barlist">
               <div class="barlist__row"><span>Online store</span><span class="barlist__track"><span class="barlist__fill" style="width:61%;background:var(--gold)"></span></span><span class="barlist__val">$29,410</span></div>
               <div class="barlist__row"><span>Instagram Shop</span><span class="barlist__track"><span class="barlist__fill" style="width:23%;background:var(--olive)"></span></span><span class="barlist__val">$11,090</span></div>
-              <div class="barlist__row"><span>TikTok Shop</span><span class="barlist__track"><span class="barlist__fill" style="width:11%;background:var(--palm)"></span></span><span class="barlist__val">$5,300</span></div>
+              <div class="barlist__row"><span>TikTok Shop</span><span class="barlist__track"><span class="barlist__fill" style="width:11%;background:var(--caramel)"></span></span><span class="barlist__val">$5,300</span></div>
               <div class="barlist__row"><span>Pop-up / POS</span><span class="barlist__track"><span class="barlist__fill" style="width:5%;background:var(--sunflower)"></span></span><span class="barlist__val">$2,410</span></div>
             </div>
           </div>
@@ -575,8 +576,8 @@
               <text x="48" y="172">wk 1</text><text x="712" y="172" text-anchor="end">wk 12</text>
             </g>
             <path d="M48,148 L108,142 L168,136 L228,128 L288,120 L348,112 L408,100 L468,92 L528,80 L588,66 L648,54 L708,40"
-                  fill="none" stroke="var(--palm)" stroke-width="2.5"/>
-            <circle cx="708" cy="40" r="4" fill="var(--palm)"/>
+                  fill="none" stroke="var(--caramel)" stroke-width="2.5"/>
+            <circle cx="708" cy="40" r="4" fill="var(--caramel)"/>
           </svg>
         </div>
       </section>
@@ -648,7 +649,7 @@
             <div class="barlist">
               <div class="barlist__row"><span>Instagram</span><span class="barlist__track"><span class="barlist__fill" style="width:100%;background:var(--gold)"></span></span><span class="barlist__val">9,410</span></div>
               <div class="barlist__row"><span>Direct</span><span class="barlist__track"><span class="barlist__fill" style="width:62%;background:var(--olive)"></span></span><span class="barlist__val">5,830</span></div>
-              <div class="barlist__row"><span>TikTok</span><span class="barlist__track"><span class="barlist__fill" style="width:55%;background:var(--palm)"></span></span><span class="barlist__val">5,180</span></div>
+              <div class="barlist__row"><span>TikTok</span><span class="barlist__track"><span class="barlist__fill" style="width:55%;background:var(--caramel)"></span></span><span class="barlist__val">5,180</span></div>
               <div class="barlist__row"><span>Google organic</span><span class="barlist__track"><span class="barlist__fill" style="width:33%;background:var(--sunflower)"></span></span><span class="barlist__val">3,120</span></div>
               <div class="barlist__row"><span>Email</span><span class="barlist__track"><span class="barlist__fill" style="width:27%"></span></span><span class="barlist__val">2,600</span></div>
             </div>
@@ -656,8 +657,8 @@
           <div class="card">
             <header><h2>Conversion by source</h2><span class="sub">sessions → orders</span></header>
             <div class="barlist">
-              <div class="barlist__row"><span>Email</span><span class="barlist__track"><span class="barlist__fill" style="width:100%;background:var(--palm)"></span></span><span class="barlist__val">4.9%</span></div>
-              <div class="barlist__row"><span>Direct</span><span class="barlist__track"><span class="barlist__fill" style="width:69%;background:var(--palm)"></span></span><span class="barlist__val">3.4%</span></div>
+              <div class="barlist__row"><span>Email</span><span class="barlist__track"><span class="barlist__fill" style="width:100%;background:var(--caramel)"></span></span><span class="barlist__val">4.9%</span></div>
+              <div class="barlist__row"><span>Direct</span><span class="barlist__track"><span class="barlist__fill" style="width:69%;background:var(--caramel)"></span></span><span class="barlist__val">3.4%</span></div>
               <div class="barlist__row"><span>Google organic</span><span class="barlist__track"><span class="barlist__fill" style="width:53%"></span></span><span class="barlist__val">2.6%</span></div>
               <div class="barlist__row"><span>Instagram</span><span class="barlist__track"><span class="barlist__fill" style="width:39%"></span></span><span class="barlist__val">1.9%</span></div>
               <div class="barlist__row"><span>TikTok</span><span class="barlist__track"><span class="barlist__fill" style="width:24%;background:var(--brick)"></span></span><span class="barlist__val">1.2%</span></div>
