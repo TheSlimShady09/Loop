@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 200" role="img" aria-label="LOOP">
+  <!-- Header variant: cream wordmark + gold rope on Bright Gold ground -->
+  <rect width="640" height="200" fill="#F7DA39"/>
+  <text x="40" y="150" font-family="Anton, 'Arial Narrow', sans-serif" font-size="150" letter-spacing="-6" fill="#F4EDDA">LOOP</text>
+  <g fill="none" stroke="#7B562D" stroke-width="12" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M196 66 C 150 20 300 8 340 70 C 366 118 236 158 274 78 C 300 24 420 36 448 92 C 470 138 380 188 300 184"/>
+    <path d="M320 48 C 336 92 322 130 300 172" stroke-width="9"/>
+  </g>
+</svg>

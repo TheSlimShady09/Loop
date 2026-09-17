@@ -1,0 +1,728 @@
+<title>LOOP Merchant Dashboard</title>
+<meta name="description" content="Store analytics prototype for LOOP — overview, sales, products, customers, inventory, and marketing, with sample data." />
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700&display=swap" />
+
+<style>
+  :root {
+    --gold:      #F7DA39;
+    --sunflower: #FFBA4A;
+    --khaki:     #373D20;
+    --olive:     #7B562D;
+    --palm:      #8E9843;
+    --brick:     #B5462E;   /* semantic: critical / down — earthy red, not in brand set but tuned to it */
+
+    --bg:      #F1E9D4;     /* warm ground */
+    --panel:   #FBF7EC;
+    --panel-2: #F5EEDB;
+    --text:    #373D20;
+    --muted:   #6E6B4C;
+    --line:    #E2D8BC;
+
+    --sidebar-bg: #2F3418;
+    --sidebar-fg: #E8E4C7;
+
+    --ok:   var(--palm);
+    --warn: var(--sunflower);
+    --bad:  var(--brick);
+
+    --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+    --r: 10px;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg:      #1C1F0C;
+      --panel:   #262B12;
+      --panel-2: #2E3417;
+      --text:    #F1EAD5;
+      --muted:   #ADA983;
+      --line:    #3A4020;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg:      #1C1F0C;
+    --panel:   #262B12;
+    --panel-2: #2E3417;
+    --text:    #F1EAD5;
+    --muted:   #ADA983;
+    --line:    #3A4020;
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+    font-size: 14px;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+  h1, h2, h3, .num {
+    font-family: "Anton", "Arial Narrow", sans-serif;
+    font-weight: 400;
+    letter-spacing: 0.005em;
+    margin: 0;
+  }
+  .num { font-feature-settings: "tnum" 1; font-variant-numeric: tabular-nums; }
+  a { color: inherit; }
+  :focus-visible { outline: 2px solid var(--sunflower); outline-offset: 2px; border-radius: 3px; }
+
+  /* ---------- shell ---------- */
+  .app {
+    display: grid;
+    grid-template-columns: 224px 1fr;
+    min-height: 100vh;
+  }
+
+  .sidebar {
+    background: var(--sidebar-bg);
+    color: var(--sidebar-fg);
+    padding: 1.1rem 0.9rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.4rem;
+    position: sticky;
+    top: 0;
+    align-self: start;
+    height: 100vh;
+  }
+  .brand { display: flex; align-items: center; gap: 0.6rem; padding: 0.2rem 0.4rem; }
+  .brand svg { width: 30px; height: 30px; color: var(--gold); flex: none; }
+  .brand b { font-family: "Anton", sans-serif; font-size: 1.3rem; letter-spacing: 0.02em; color: var(--gold); }
+  .brand span { font-size: 0.66rem; letter-spacing: 0.18em; text-transform: uppercase; color: #B7B489; display: block; }
+
+  .nav { display: flex; flex-direction: column; gap: 2px; }
+  .nav button {
+    all: unset;
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    padding: 0.55rem 0.7rem;
+    border-radius: 8px;
+    font-size: 0.86rem;
+    font-weight: 500;
+    cursor: pointer;
+    color: #D9D5B4;
+    transition: background-color 150ms var(--ease-out), color 150ms var(--ease-out);
+  }
+  .nav button:hover { background: rgba(255,255,255,0.06); color: #fff; }
+  .nav button[aria-current="true"] { background: var(--gold); color: var(--khaki); font-weight: 600; }
+  .nav .dot { width: 7px; height: 7px; border-radius: 50%; background: currentColor; flex: none; opacity: 0.6; }
+
+  .sidebar__foot { margin-top: auto; font-size: 0.72rem; color: #9A9770; padding: 0 0.4rem; }
+
+  /* ---------- topbar ---------- */
+  .main { display: flex; flex-direction: column; min-width: 0; }
+  .topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 1rem clamp(1rem, 3vw, 2rem);
+    border-bottom: 1px solid var(--line);
+    background: var(--panel);
+    position: sticky;
+    top: 0;
+    z-index: 5;
+    flex-wrap: wrap;
+  }
+  .topbar h1 { font-size: 1.5rem; text-transform: uppercase; }
+  .topbar__meta { display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap; }
+  .pill {
+    display: inline-flex; align-items: center; gap: 0.4rem;
+    padding: 0.35rem 0.7rem;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    background: var(--panel-2);
+    font-size: 0.78rem;
+    font-weight: 500;
+  }
+  .pill select { all: unset; cursor: pointer; font: inherit; }
+  .live { width: 7px; height: 7px; border-radius: 50%; background: var(--ok); box-shadow: 0 0 0 3px color-mix(in srgb, var(--ok) 25%, transparent); }
+
+  .content { padding: clamp(1rem, 3vw, 2rem); display: grid; gap: 1.1rem; }
+  .panel { display: none; }
+  .panel[data-active] { display: grid; gap: 1.1rem; animation: fade 260ms var(--ease-out); }
+  @keyframes fade { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+
+  /* ---------- KPI tiles ---------- */
+  .kpis {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+    gap: 0.7rem;
+  }
+  .kpi {
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: var(--r);
+    padding: 0.9rem 1rem 0.8rem;
+    display: grid;
+    gap: 0.15rem;
+    align-content: start;
+  }
+  .kpi__label { font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
+  .kpi__value { font-size: 1.7rem; line-height: 1; margin-top: 0.2rem; }
+  .kpi__delta { font-size: 0.76rem; font-weight: 600; display: inline-flex; align-items: center; gap: 0.25rem; }
+  .up { color: var(--ok); }
+  .down { color: var(--bad); }
+  .kpi__spark { margin-top: 0.4rem; }
+
+  /* ---------- cards ---------- */
+  .grid { display: grid; gap: 1.1rem; }
+  @media (min-width: 960px) {
+    .grid--2 { grid-template-columns: 1fr 1fr; }
+    .grid--3 { grid-template-columns: 1.4fr 1fr; }
+  }
+  .card {
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: var(--r);
+    padding: 1.1rem 1.2rem 1.2rem;
+    min-width: 0;
+  }
+  .card > header {
+    display: flex; align-items: baseline; justify-content: space-between; gap: 0.8rem;
+    margin-bottom: 0.9rem; flex-wrap: wrap;
+  }
+  .card h2 { font-size: 1.05rem; text-transform: uppercase; letter-spacing: 0.03em; }
+  .card .sub { font-size: 0.76rem; color: var(--muted); }
+
+  /* ---------- tables ---------- */
+  .table-wrap { overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; font-size: 0.82rem; }
+  th, td { text-align: left; padding: 0.55rem 0.6rem; border-bottom: 1px solid var(--line); white-space: nowrap; }
+  th { font-size: 0.68rem; letter-spacing: 0.09em; text-transform: uppercase; color: var(--muted); font-weight: 600; }
+  td.n, th.n { text-align: right; font-variant-numeric: tabular-nums; }
+  tbody tr:last-child td { border-bottom: none; }
+  .tag {
+    font-size: 0.68rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase;
+    padding: 0.15rem 0.45rem; border-radius: 4px; background: var(--panel-2); border: 1px solid var(--line);
+  }
+  .tag--ok  { background: color-mix(in srgb, var(--ok) 20%, transparent);  border-color: transparent; color: color-mix(in srgb, var(--ok) 75%, var(--text)); }
+  .tag--warn{ background: color-mix(in srgb, var(--warn) 28%, transparent); border-color: transparent; color: var(--khaki); }
+  .tag--bad { background: color-mix(in srgb, var(--bad) 20%, transparent); border-color: transparent; color: color-mix(in srgb, var(--bad) 80%, var(--text)); }
+
+  /* ---------- bar list ---------- */
+  .barlist { display: grid; gap: 0.55rem; }
+  .barlist__row { display: grid; grid-template-columns: 8.5rem 1fr auto; align-items: center; gap: 0.7rem; font-size: 0.82rem; }
+  .barlist__track { height: 10px; border-radius: 5px; background: var(--panel-2); overflow: hidden; }
+  .barlist__fill { height: 100%; border-radius: 5px; background: var(--olive); }
+  .barlist__val { font-variant-numeric: tabular-nums; color: var(--muted); }
+
+  /* ---------- misc ---------- */
+  .legend { display: flex; gap: 1rem; flex-wrap: wrap; font-size: 0.76rem; color: var(--muted); margin-top: 0.6rem; }
+  .legend i { width: 10px; height: 10px; border-radius: 3px; display: inline-block; margin-right: 0.35rem; vertical-align: -1px; }
+  .note { font-size: 0.74rem; color: var(--muted); }
+  .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+
+  .menu-toggle { display: none; }
+
+  @media (max-width: 820px) {
+    .app { grid-template-columns: 1fr; }
+    .sidebar {
+      position: sticky; height: auto; flex-direction: row; align-items: center;
+      gap: 0.8rem; overflow-x: auto; padding: 0.7rem;
+    }
+    .brand span { display: none; }
+    .sidebar__foot { display: none; }
+    .nav { flex-direction: row; }
+    .nav button { white-space: nowrap; padding: 0.45rem 0.6rem; }
+    .nav .dot { display: none; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { animation-duration: 0.001ms !important; transition-duration: 0.001ms !important; }
+  }
+</style>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="rope" viewBox="0 0 200 200">
+    <g fill="none" stroke="currentColor" stroke-width="15" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M100 30 C 152 30 178 66 168 104 C 159 138 116 146 106 114 C 98 90 132 82 152 102"/>
+      <path d="M100 30 C 48 30 22 66 32 104 C 41 138 84 146 94 114"/>
+      <path d="M106 114 C 102 138 100 160 108 186" stroke-width="11"/>
+    </g>
+  </symbol>
+</svg>
+
+<div class="app">
+  <!-- ================= SIDEBAR ================= -->
+  <aside class="sidebar">
+    <div class="brand">
+      <svg aria-hidden="true"><use href="#rope"/></svg>
+      <div>
+        <b>LOOP</b>
+        <span>Merchant</span>
+      </div>
+    </div>
+
+    <nav class="nav" id="nav" aria-label="Dashboard sections">
+      <button data-target="overview"  aria-current="true"><i class="dot"></i>Overview</button>
+      <button data-target="sales"><i class="dot"></i>Sales</button>
+      <button data-target="products"><i class="dot"></i>Products</button>
+      <button data-target="customers"><i class="dot"></i>Customers</button>
+      <button data-target="inventory"><i class="dot"></i>Inventory</button>
+      <button data-target="marketing"><i class="dot"></i>Marketing</button>
+    </nav>
+
+    <div class="sidebar__foot">
+      Sample data · CAD<br>Prototype for LOOP
+    </div>
+  </aside>
+
+  <!-- ================= MAIN ================= -->
+  <div class="main">
+    <div class="topbar">
+      <h1 id="page-title">Overview</h1>
+      <div class="topbar__meta">
+        <span class="pill"><span class="live"></span> Live</span>
+        <span class="pill">
+          <label class="sr" for="range">Date range</label>
+          <select id="range">
+            <option>Last 7 days</option>
+            <option selected>Last 30 days</option>
+            <option>Last 90 days</option>
+            <option>Year to date</option>
+          </select>
+        </span>
+        <span class="pill">loopapparel.ca</span>
+      </div>
+    </div>
+
+    <div class="content">
+
+      <!-- ============ OVERVIEW ============ -->
+      <section class="panel" id="overview" data-active aria-labelledby="page-title">
+        <div class="kpis">
+          <div class="kpi">
+            <span class="kpi__label">Revenue</span>
+            <span class="kpi__value num">$48,210</span>
+            <span class="kpi__delta up">▲ 18.4% <span class="note">vs prev 30d</span></span>
+            <svg class="kpi__spark" width="100%" height="30" viewBox="0 0 120 30" preserveAspectRatio="none" aria-hidden="true">
+              <polyline fill="none" stroke="var(--palm)" stroke-width="2" points="0,24 12,22 24,25 36,18 48,20 60,14 72,15 84,10 96,12 108,6 120,4"/>
+            </svg>
+          </div>
+          <div class="kpi">
+            <span class="kpi__label">Orders</span>
+            <span class="kpi__value num">612</span>
+            <span class="kpi__delta up">▲ 12.1%</span>
+            <svg class="kpi__spark" width="100%" height="30" viewBox="0 0 120 30" preserveAspectRatio="none" aria-hidden="true">
+              <polyline fill="none" stroke="var(--palm)" stroke-width="2" points="0,20 12,22 24,18 36,19 48,15 60,17 72,12 84,14 96,10 108,11 120,8"/>
+            </svg>
+          </div>
+          <div class="kpi">
+            <span class="kpi__label">Avg order value</span>
+            <span class="kpi__value num">$78.77</span>
+            <span class="kpi__delta up">▲ 5.6%</span>
+          </div>
+          <div class="kpi">
+            <span class="kpi__label">Conversion rate</span>
+            <span class="kpi__value num">2.34%</span>
+            <span class="kpi__delta down">▼ 0.2 pts</span>
+          </div>
+          <div class="kpi">
+            <span class="kpi__label">Sessions</span>
+            <span class="kpi__value num">26,140</span>
+            <span class="kpi__delta up">▲ 21.0%</span>
+          </div>
+          <div class="kpi">
+            <span class="kpi__label">Return rate</span>
+            <span class="kpi__value num">6.8%</span>
+            <span class="kpi__delta up">▼ 1.1 pts <span class="note">lower is better</span></span>
+          </div>
+        </div>
+
+        <div class="grid grid--3">
+          <div class="card">
+            <header>
+              <div>
+                <h2>Revenue — last 30 days</h2>
+                <span class="sub">Net of refunds · CAD</span>
+              </div>
+              <span class="tag tag--ok">Trending up</span>
+            </header>
+            <!-- area chart: scale 0..2600, 30 days -->
+            <svg viewBox="0 0 720 240" width="100%" height="240" role="img" aria-label="Daily revenue rising from about $900 to about $2,400 over 30 days">
+              <g stroke="var(--line)" stroke-width="1">
+                <line x1="48" y1="20"  x2="712" y2="20"/>
+                <line x1="48" y1="70"  x2="712" y2="70"/>
+                <line x1="48" y1="120" x2="712" y2="120"/>
+                <line x1="48" y1="170" x2="712" y2="170"/>
+                <line x1="48" y1="200" x2="712" y2="200"/>
+              </g>
+              <g fill="var(--muted)" font-size="11" font-family="Inter, sans-serif">
+                <text x="40" y="24"  text-anchor="end">$2.6k</text>
+                <text x="40" y="74"  text-anchor="end">$1.8k</text>
+                <text x="40" y="124" text-anchor="end">$1.2k</text>
+                <text x="40" y="174" text-anchor="end">$0.6k</text>
+                <text x="40" y="204" text-anchor="end">$0</text>
+                <text x="48"  y="222">May 1</text>
+                <text x="380" y="222" text-anchor="middle">May 15</text>
+                <text x="712" y="222" text-anchor="end">May 30</text>
+              </g>
+              <path d="M48,164 L71,170 L94,150 L117,158 L140,120 L163,132 L186,112 L209,126 L232,96 L255,108 L278,90 L301,102 L324,74 L347,88 L370,80 L393,66 L416,78 L439,58 L462,70 L485,50 L508,62 L531,44 L554,56 L577,40 L600,52 L623,36 L646,46 L669,32 L692,40 L712,28
+                       L712,200 L48,200 Z" fill="var(--gold)" fill-opacity="0.22"/>
+              <path d="M48,164 L71,170 L94,150 L117,158 L140,120 L163,132 L186,112 L209,126 L232,96 L255,108 L278,90 L301,102 L324,74 L347,88 L370,80 L393,66 L416,78 L439,58 L462,70 L485,50 L508,62 L531,44 L554,56 L577,40 L600,52 L623,36 L646,46 L669,32 L692,40 L712,28"
+                    fill="none" stroke="var(--olive)" stroke-width="2.5" stroke-linejoin="round"/>
+              <circle cx="712" cy="28" r="4" fill="var(--olive)"/>
+              <text x="700" y="20" text-anchor="end" font-size="11" font-family="Inter, sans-serif" fill="var(--text)" font-weight="600">$2,410</text>
+            </svg>
+          </div>
+
+          <div class="card">
+            <header><h2>Today so far</h2><span class="sub">since 00:00 ET</span></header>
+            <div class="barlist" style="grid-template-columns:1fr;gap:0.9rem">
+              <div>
+                <div style="display:flex;justify-content:space-between"><span class="note">Revenue</span><b class="num">$1,940</b></div>
+                <div class="barlist__track" style="margin-top:4px"><div class="barlist__fill" style="width:74%;background:var(--gold)"></div></div>
+                <span class="note">74% of daily average ($2,610)</span>
+              </div>
+              <div>
+                <div style="display:flex;justify-content:space-between"><span class="note">Orders</span><b class="num">23</b></div>
+                <div class="barlist__track" style="margin-top:4px"><div class="barlist__fill" style="width:66%;background:var(--palm)"></div></div>
+              </div>
+              <div>
+                <div style="display:flex;justify-content:space-between"><span class="note">Sessions</span><b class="num">1,012</b></div>
+                <div class="barlist__track" style="margin-top:4px"><div class="barlist__fill" style="width:58%;background:var(--olive)"></div></div>
+              </div>
+              <div>
+                <div style="display:flex;justify-content:space-between"><span class="note">Carts abandoned</span><b class="num">41</b></div>
+                <div class="barlist__track" style="margin-top:4px"><div class="barlist__fill" style="width:44%;background:var(--brick)"></div></div>
+                <span class="note">Recovery email sent to 38</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <header><h2>Recent orders</h2><a class="sub" href="#">View all →</a></header>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Order</th><th>Customer</th><th>Items</th><th>Province</th><th>Channel</th><th class="n">Total</th><th>Status</th></tr></thead>
+              <tbody>
+                <tr><td>LOOP-1612</td><td>M. Tremblay</td><td>Loop Hoodie ×1</td><td>QC</td><td>Online</td><td class="n">$118.00</td><td><span class="tag tag--ok">Paid</span></td></tr>
+                <tr><td>LOOP-1611</td><td>A. Okafor</td><td>Rope Tee ×2, Beanie ×1</td><td>ON</td><td>Instagram</td><td class="n">$130.00</td><td><span class="tag tag--ok">Paid</span></td></tr>
+                <tr><td>LOOP-1610</td><td>J. Park</td><td>Work Jacket ×1</td><td>BC</td><td>Online</td><td class="n">$210.00</td><td><span class="tag tag--warn">Unfulfilled</span></td></tr>
+                <tr><td>LOOP-1609</td><td>S. Nguyen</td><td>Loop Hoodie ×1</td><td>AB</td><td>TikTok</td><td class="n">$118.00</td><td><span class="tag tag--ok">Paid</span></td></tr>
+                <tr><td>LOOP-1608</td><td>D. Bauer</td><td>Every-Mile Crew ×1</td><td>ON</td><td>Online</td><td class="n">$88.00</td><td><span class="tag tag--bad">Refunded</span></td></tr>
+                <tr><td>LOOP-1607</td><td>R. Singh</td><td>Rope Tee ×1</td><td>MB</td><td>Online</td><td class="n">$48.00</td><td><span class="tag tag--ok">Paid</span></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ SALES ============ -->
+      <section class="panel" id="sales" aria-label="Sales">
+        <div class="kpis">
+          <div class="kpi"><span class="kpi__label">Gross sales</span><span class="kpi__value num">$52,880</span><span class="kpi__delta up">▲ 17.2%</span></div>
+          <div class="kpi"><span class="kpi__label">Discounts</span><span class="kpi__value num">−$3,110</span><span class="kpi__delta down">▲ 9.0%</span></div>
+          <div class="kpi"><span class="kpi__label">Refunds</span><span class="kpi__value num">−$1,560</span><span class="kpi__delta up">▼ 12.0%</span></div>
+          <div class="kpi"><span class="kpi__label">Net sales</span><span class="kpi__value num">$48,210</span><span class="kpi__delta up">▲ 18.4%</span></div>
+          <div class="kpi"><span class="kpi__label">Units sold</span><span class="kpi__value num">1,043</span><span class="kpi__delta up">▲ 14.9%</span></div>
+        </div>
+
+        <div class="grid grid--2">
+          <div class="card">
+            <header><h2>Sales by channel</h2><span class="sub">net · last 30 days</span></header>
+            <div class="barlist">
+              <div class="barlist__row"><span>Online store</span><span class="barlist__track"><span class="barlist__fill" style="width:61%;background:var(--gold)"></span></span><span class="barlist__val">$29,410</span></div>
+              <div class="barlist__row"><span>Instagram Shop</span><span class="barlist__track"><span class="barlist__fill" style="width:23%;background:var(--olive)"></span></span><span class="barlist__val">$11,090</span></div>
+              <div class="barlist__row"><span>TikTok Shop</span><span class="barlist__track"><span class="barlist__fill" style="width:11%;background:var(--palm)"></span></span><span class="barlist__val">$5,300</span></div>
+              <div class="barlist__row"><span>Pop-up / POS</span><span class="barlist__track"><span class="barlist__fill" style="width:5%;background:var(--sunflower)"></span></span><span class="barlist__val">$2,410</span></div>
+            </div>
+          </div>
+
+          <div class="card">
+            <header><h2>Top provinces</h2><span class="sub">by net sales</span></header>
+            <div class="barlist">
+              <div class="barlist__row"><span>Ontario</span><span class="barlist__track"><span class="barlist__fill" style="width:100%"></span></span><span class="barlist__val">$18,900</span></div>
+              <div class="barlist__row"><span>Quebec</span><span class="barlist__track"><span class="barlist__fill" style="width:64%"></span></span><span class="barlist__val">$12,050</span></div>
+              <div class="barlist__row"><span>British Columbia</span><span class="barlist__track"><span class="barlist__fill" style="width:47%"></span></span><span class="barlist__val">$8,830</span></div>
+              <div class="barlist__row"><span>Alberta</span><span class="barlist__track"><span class="barlist__fill" style="width:31%"></span></span><span class="barlist__val">$5,820</span></div>
+              <div class="barlist__row"><span>Rest of Canada</span><span class="barlist__track"><span class="barlist__fill" style="width:14%"></span></span><span class="barlist__val">$2,610</span></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <header><h2>Daily net sales</h2><span class="sub">Mon–Sun pattern · weekends shaded</span></header>
+          <svg viewBox="0 0 720 220" width="100%" height="220" role="img" aria-label="Daily net sales bars, ranging roughly $900 to $2,400, higher on weekends">
+            <g fill="var(--muted)" font-size="11" font-family="Inter, sans-serif">
+              <text x="40" y="24"  text-anchor="end">$2.4k</text>
+              <text x="40" y="94"  text-anchor="end">$1.6k</text>
+              <text x="40" y="164" text-anchor="end">$0.8k</text>
+              <text x="40" y="196" text-anchor="end">$0</text>
+            </g>
+            <line x1="48" y1="188" x2="712" y2="188" stroke="var(--line)"/>
+            <g id="salesbars"></g>
+          </svg>
+          <div class="legend"><span><i style="background:var(--gold)"></i>Weekday</span><span><i style="background:var(--olive)"></i>Weekend</span></div>
+        </div>
+      </section>
+
+      <!-- ============ PRODUCTS ============ -->
+      <section class="panel" id="products" aria-label="Products">
+        <div class="kpis">
+          <div class="kpi"><span class="kpi__label">Active products</span><span class="kpi__value num">24</span></div>
+          <div class="kpi"><span class="kpi__label">Variants</span><span class="kpi__value num">186</span></div>
+          <div class="kpi"><span class="kpi__label">Sell-through (30d)</span><span class="kpi__value num">41%</span><span class="kpi__delta up">▲ 6 pts</span></div>
+          <div class="kpi"><span class="kpi__label">Inventory value</span><span class="kpi__value num">$96,400</span></div>
+          <div class="kpi"><span class="kpi__label">Out of stock</span><span class="kpi__value num">7</span><span class="kpi__delta down">variants</span></div>
+        </div>
+
+        <div class="card">
+          <header><h2>Best sellers</h2><span class="sub">last 30 days · net</span></header>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Product</th><th class="n">Units</th><th class="n">Revenue</th><th class="n">Return %</th><th class="n">Sell-through</th><th>Stock</th></tr></thead>
+              <tbody>
+                <tr><td>The Loop Hoodie — Khaki</td><td class="n">214</td><td class="n">$25,250</td><td class="n">4.1%</td><td class="n">58%</td><td><span class="tag tag--ok">Healthy</span></td></tr>
+                <tr><td>Rope Logo Tee — Cream</td><td class="n">302</td><td class="n">$14,500</td><td class="n">3.0%</td><td class="n">62%</td><td><span class="tag tag--warn">Low: S, M</span></td></tr>
+                <tr><td>Khaki Work Jacket</td><td class="n">61</td><td class="n">$12,810</td><td class="n">7.8%</td><td class="n">33%</td><td><span class="tag tag--ok">Healthy</span></td></tr>
+                <tr><td>Every-Mile Crew — Olive</td><td class="n">98</td><td class="n">$8,620</td><td class="n">5.2%</td><td class="n">45%</td><td><span class="tag tag--ok">Healthy</span></td></tr>
+                <tr><td>Lasso Beanie</td><td class="n">176</td><td class="n">$5,980</td><td class="n">1.4%</td><td class="n">71%</td><td><span class="tag tag--bad">Out: One Size</span></td></tr>
+                <tr><td>Field Cargo Pant</td><td class="n">44</td><td class="n">$5,280</td><td class="n">11.4%</td><td class="n">22%</td><td><span class="tag tag--warn">Slow</span></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="grid grid--2">
+          <div class="card">
+            <header><h2>Size curve</h2><span class="sub">share of units — tops</span></header>
+            <div class="barlist">
+              <div class="barlist__row"><span>XS</span><span class="barlist__track"><span class="barlist__fill" style="width:8%"></span></span><span class="barlist__val">8%</span></div>
+              <div class="barlist__row"><span>S</span><span class="barlist__track"><span class="barlist__fill" style="width:19%"></span></span><span class="barlist__val">19%</span></div>
+              <div class="barlist__row"><span>M</span><span class="barlist__track"><span class="barlist__fill" style="width:31%;background:var(--gold)"></span></span><span class="barlist__val">31%</span></div>
+              <div class="barlist__row"><span>L</span><span class="barlist__track"><span class="barlist__fill" style="width:26%;background:var(--gold)"></span></span><span class="barlist__val">26%</span></div>
+              <div class="barlist__row"><span>XL</span><span class="barlist__track"><span class="barlist__fill" style="width:12%"></span></span><span class="barlist__val">12%</span></div>
+              <div class="barlist__row"><span>XXL</span><span class="barlist__track"><span class="barlist__fill" style="width:4%"></span></span><span class="barlist__val">4%</span></div>
+            </div>
+            <p class="note">Buy plan: weight next production run M/L heavier (57% of demand).</p>
+          </div>
+          <div class="card">
+            <header><h2>Underperformers</h2><span class="sub">low sell-through, high returns</span></header>
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th>Product</th><th class="n">Sell-through</th><th class="n">Return %</th></tr></thead>
+                <tbody>
+                  <tr><td>Field Cargo Pant</td><td class="n">22%</td><td class="n">11.4%</td></tr>
+                  <tr><td>Loop Shorts — Gold</td><td class="n">17%</td><td class="n">9.1%</td></tr>
+                  <tr><td>Camp Cap — Palm</td><td class="n">14%</td><td class="n">2.0%</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <p class="note">Action: mark down 20%, move to <b>Sale</b> collection, pause reorders.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ CUSTOMERS ============ -->
+      <section class="panel" id="customers" aria-label="Customers">
+        <div class="kpis">
+          <div class="kpi"><span class="kpi__label">Customers</span><span class="kpi__value num">3,940</span><span class="kpi__delta up">▲ 320 new</span></div>
+          <div class="kpi"><span class="kpi__label">Returning rate</span><span class="kpi__value num">28%</span><span class="kpi__delta up">▲ 3 pts</span></div>
+          <div class="kpi"><span class="kpi__label">Repeat AOV</span><span class="kpi__value num">$94.20</span></div>
+          <div class="kpi"><span class="kpi__label">90-day LTV</span><span class="kpi__value num">$121</span></div>
+          <div class="kpi"><span class="kpi__label">Email subscribers</span><span class="kpi__value num">9,180</span><span class="kpi__delta up">▲ 11.4%</span></div>
+        </div>
+
+        <div class="grid grid--2">
+          <div class="card">
+            <header><h2>New vs returning revenue</h2><span class="sub">last 30 days</span></header>
+            <svg viewBox="0 0 220 220" width="200" height="200" role="img" aria-label="72 percent of revenue from new customers, 28 percent from returning">
+              <circle cx="110" cy="110" r="80" fill="none" stroke="var(--panel-2)" stroke-width="26"/>
+              <circle cx="110" cy="110" r="80" fill="none" stroke="var(--gold)" stroke-width="26"
+                      stroke-dasharray="362 503" stroke-dashoffset="0" transform="rotate(-90 110 110)"/>
+              <circle cx="110" cy="110" r="80" fill="none" stroke="var(--olive)" stroke-width="26"
+                      stroke-dasharray="141 503" stroke-dashoffset="-362" transform="rotate(-90 110 110)"/>
+              <text x="110" y="104" text-anchor="middle" font-family="Anton, sans-serif" font-size="30" fill="var(--text)">72%</text>
+              <text x="110" y="126" text-anchor="middle" font-size="11" fill="var(--muted)">new</text>
+            </svg>
+            <div class="legend"><span><i style="background:var(--gold)"></i>New — $34,700</span><span><i style="background:var(--olive)"></i>Returning — $13,510</span></div>
+          </div>
+
+          <div class="card">
+            <header><h2>Top customers</h2><span class="sub">by lifetime spend</span></header>
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th>Customer</th><th class="n">Orders</th><th class="n">Spend</th><th>Segment</th></tr></thead>
+                <tbody>
+                  <tr><td>A. Okafor — Toronto</td><td class="n">7</td><td class="n">$690</td><td><span class="tag tag--ok">VIP</span></td></tr>
+                  <tr><td>M. Tremblay — Montréal</td><td class="n">5</td><td class="n">$540</td><td><span class="tag tag--ok">VIP</span></td></tr>
+                  <tr><td>J. Park — Vancouver</td><td class="n">4</td><td class="n">$470</td><td><span class="tag">Loyal</span></td></tr>
+                  <tr><td>S. Nguyen — Calgary</td><td class="n">3</td><td class="n">$318</td><td><span class="tag">Loyal</span></td></tr>
+                  <tr><td>R. Singh — Winnipeg</td><td class="n">3</td><td class="n">$286</td><td><span class="tag">Loyal</span></td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <header><h2>Email list growth</h2><span class="sub">subscribers, last 12 weeks</span></header>
+          <svg viewBox="0 0 720 200" width="100%" height="200" role="img" aria-label="Email subscribers growing steadily from about 6,400 to about 9,200">
+            <g stroke="var(--line)"><line x1="48" y1="30" x2="712" y2="30"/><line x1="48" y1="90" x2="712" y2="90"/><line x1="48" y1="150" x2="712" y2="150"/></g>
+            <g fill="var(--muted)" font-size="11" font-family="Inter, sans-serif">
+              <text x="40" y="34" text-anchor="end">9.5k</text>
+              <text x="40" y="94" text-anchor="end">8.0k</text>
+              <text x="40" y="154" text-anchor="end">6.5k</text>
+              <text x="48" y="172">wk 1</text><text x="712" y="172" text-anchor="end">wk 12</text>
+            </g>
+            <path d="M48,148 L108,142 L168,136 L228,128 L288,120 L348,112 L408,100 L468,92 L528,80 L588,66 L648,54 L708,40"
+                  fill="none" stroke="var(--palm)" stroke-width="2.5"/>
+            <circle cx="708" cy="40" r="4" fill="var(--palm)"/>
+          </svg>
+        </div>
+      </section>
+
+      <!-- ============ INVENTORY ============ -->
+      <section class="panel" id="inventory" aria-label="Inventory">
+        <div class="kpis">
+          <div class="kpi"><span class="kpi__label">Units on hand</span><span class="kpi__value num">6,120</span></div>
+          <div class="kpi"><span class="kpi__label">Inventory value</span><span class="kpi__value num">$96,400</span></div>
+          <div class="kpi"><span class="kpi__label">Low stock</span><span class="kpi__value num">9</span><span class="kpi__delta down">variants ≤ 10</span></div>
+          <div class="kpi"><span class="kpi__label">Out of stock</span><span class="kpi__value num">7</span></div>
+          <div class="kpi"><span class="kpi__label">Days of cover</span><span class="kpi__value num">37</span><span class="kpi__delta up">at current rate</span></div>
+        </div>
+
+        <div class="card">
+          <header><h2>Reorder now</h2><span class="sub">projected to sell out before a 21-day restock lands</span></header>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Variant</th><th class="n">On hand</th><th class="n">30d sold</th><th class="n">Days left</th><th class="n">Suggested PO</th><th>Priority</th></tr></thead>
+              <tbody>
+                <tr><td>Lasso Beanie — One Size</td><td class="n">0</td><td class="n">176</td><td class="n">0</td><td class="n">400</td><td><span class="tag tag--bad">Critical</span></td></tr>
+                <tr><td>Rope Logo Tee — Cream / S</td><td class="n">6</td><td class="n">74</td><td class="n">2</td><td class="n">200</td><td><span class="tag tag--bad">Critical</span></td></tr>
+                <tr><td>Rope Logo Tee — Cream / M</td><td class="n">11</td><td class="n">88</td><td class="n">4</td><td class="n">240</td><td><span class="tag tag--warn">High</span></td></tr>
+                <tr><td>Loop Hoodie — Khaki / L</td><td class="n">18</td><td class="n">61</td><td class="n">9</td><td class="n">150</td><td><span class="tag tag--warn">High</span></td></tr>
+                <tr><td>Every-Mile Crew — Olive / M</td><td class="n">22</td><td class="n">34</td><td class="n">19</td><td class="n">120</td><td><span class="tag">Watch</span></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="grid grid--2">
+          <div class="card">
+            <header><h2>Stock by category</h2><span class="sub">units on hand</span></header>
+            <div class="barlist">
+              <div class="barlist__row"><span>Hoodies</span><span class="barlist__track"><span class="barlist__fill" style="width:100%"></span></span><span class="barlist__val">2,240</span></div>
+              <div class="barlist__row"><span>Tees</span><span class="barlist__track"><span class="barlist__fill" style="width:78%"></span></span><span class="barlist__val">1,760</span></div>
+              <div class="barlist__row"><span>Outerwear</span><span class="barlist__track"><span class="barlist__fill" style="width:41%"></span></span><span class="barlist__val">920</span></div>
+              <div class="barlist__row"><span>Accessories</span><span class="barlist__track"><span class="barlist__fill" style="width:53%"></span></span><span class="barlist__val">1,200</span></div>
+            </div>
+          </div>
+          <div class="card">
+            <header><h2>Incoming POs</h2><span class="sub">confirmed with supplier</span></header>
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th>PO</th><th>Contents</th><th class="n">Units</th><th>ETA</th></tr></thead>
+                <tbody>
+                  <tr><td>PO-041</td><td>Loop Hoodie — all sizes</td><td class="n">600</td><td>Jun 12</td></tr>
+                  <tr><td>PO-042</td><td>Rope Tee — Cream/Khaki</td><td class="n">800</td><td>Jun 18</td></tr>
+                  <tr><td>PO-043</td><td>Lasso Beanie</td><td class="n">400</td><td>Jun 21</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ MARKETING ============ -->
+      <section class="panel" id="marketing" aria-label="Marketing">
+        <div class="kpis">
+          <div class="kpi"><span class="kpi__label">Sessions</span><span class="kpi__value num">26,140</span><span class="kpi__delta up">▲ 21.0%</span></div>
+          <div class="kpi"><span class="kpi__label">Blended CAC</span><span class="kpi__value num">$22.40</span><span class="kpi__delta down">▲ 8.0%</span></div>
+          <div class="kpi"><span class="kpi__label">ROAS (paid)</span><span class="kpi__value num">3.1×</span><span class="kpi__delta up">▲ 0.4×</span></div>
+          <div class="kpi"><span class="kpi__label">Email revenue</span><span class="kpi__value num">$8,900</span><span class="kpi__delta up">18% of net</span></div>
+        </div>
+
+        <div class="grid grid--2">
+          <div class="card">
+            <header><h2>Sessions by source</h2></header>
+            <div class="barlist">
+              <div class="barlist__row"><span>Instagram</span><span class="barlist__track"><span class="barlist__fill" style="width:100%;background:var(--gold)"></span></span><span class="barlist__val">9,410</span></div>
+              <div class="barlist__row"><span>Direct</span><span class="barlist__track"><span class="barlist__fill" style="width:62%;background:var(--olive)"></span></span><span class="barlist__val">5,830</span></div>
+              <div class="barlist__row"><span>TikTok</span><span class="barlist__track"><span class="barlist__fill" style="width:55%;background:var(--palm)"></span></span><span class="barlist__val">5,180</span></div>
+              <div class="barlist__row"><span>Google organic</span><span class="barlist__track"><span class="barlist__fill" style="width:33%;background:var(--sunflower)"></span></span><span class="barlist__val">3,120</span></div>
+              <div class="barlist__row"><span>Email</span><span class="barlist__track"><span class="barlist__fill" style="width:27%"></span></span><span class="barlist__val">2,600</span></div>
+            </div>
+          </div>
+          <div class="card">
+            <header><h2>Conversion by source</h2><span class="sub">sessions → orders</span></header>
+            <div class="barlist">
+              <div class="barlist__row"><span>Email</span><span class="barlist__track"><span class="barlist__fill" style="width:100%;background:var(--palm)"></span></span><span class="barlist__val">4.9%</span></div>
+              <div class="barlist__row"><span>Direct</span><span class="barlist__track"><span class="barlist__fill" style="width:69%;background:var(--palm)"></span></span><span class="barlist__val">3.4%</span></div>
+              <div class="barlist__row"><span>Google organic</span><span class="barlist__track"><span class="barlist__fill" style="width:53%"></span></span><span class="barlist__val">2.6%</span></div>
+              <div class="barlist__row"><span>Instagram</span><span class="barlist__track"><span class="barlist__fill" style="width:39%"></span></span><span class="barlist__val">1.9%</span></div>
+              <div class="barlist__row"><span>TikTok</span><span class="barlist__track"><span class="barlist__fill" style="width:24%;background:var(--brick)"></span></span><span class="barlist__val">1.2%</span></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <header><h2>Recent campaigns</h2></header>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Campaign</th><th>Channel</th><th class="n">Spend</th><th class="n">Revenue</th><th class="n">ROAS</th><th>Status</th></tr></thead>
+              <tbody>
+                <tr><td>"Made for more nights out"</td><td>Meta</td><td class="n">$2,100</td><td class="n">$7,560</td><td class="n">3.6×</td><td><span class="tag tag--ok">Scaling</span></td></tr>
+                <tr><td>Loop Hoodie launch</td><td>TikTok</td><td class="n">$1,400</td><td class="n">$3,780</td><td class="n">2.7×</td><td><span class="tag tag--warn">Watch</span></td></tr>
+                <tr><td>Rope Tee restock — email</td><td>Klaviyo</td><td class="n">$0</td><td class="n">$4,120</td><td class="n">—</td><td><span class="tag tag--ok">Sent</span></td></tr>
+                <tr><td>Retargeting — abandoned cart</td><td>Meta</td><td class="n">$620</td><td class="n">$2,510</td><td class="n">4.0×</td><td><span class="tag tag--ok">Always-on</span></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </div>
+</div>
+
+<script>
+  (function () {
+    var nav = document.getElementById("nav");
+    var buttons = Array.prototype.slice.call(nav.querySelectorAll("button"));
+    var panels = Array.prototype.slice.call(document.querySelectorAll(".panel"));
+    var title = document.getElementById("page-title");
+
+    function show(id, btn) {
+      panels.forEach(function (p) { p.toggleAttribute("data-active", p.id === id); });
+      buttons.forEach(function (b) { b.setAttribute("aria-current", String(b === btn)); });
+      title.textContent = btn.textContent.trim();
+      document.querySelector(".content").scrollIntoView({ block: "start", behavior: "auto" });
+    }
+    nav.addEventListener("click", function (e) {
+      var b = e.target.closest("button");
+      if (b) show(b.dataset.target, b);
+    });
+
+    // daily sales bars (Sales panel) — 28 days, weekend uplift
+    var g = document.getElementById("salesbars");
+    if (g) {
+      var svgns = "http://www.w3.org/2000/svg";
+      var n = 28, x0 = 52, w = (712 - x0) / n, base = 188, maxV = 2400;
+      for (var i = 0; i < n; i++) {
+        var dow = (i + 3) % 7; // arbitrary phase
+        var weekend = dow === 5 || dow === 6;
+        var v = (weekend ? 1700 : 1150) + Math.round(Math.sin(i * 0.7) * 180) + i * 12;
+        v = Math.min(v, maxV);
+        var h = (v / maxV) * (base - 24);
+        var r = document.createElementNS(svgns, "rect");
+        r.setAttribute("x", (x0 + i * w + 2).toFixed(1));
+        r.setAttribute("y", (base - h).toFixed(1));
+        r.setAttribute("width", (w - 4).toFixed(1));
+        r.setAttribute("height", h.toFixed(1));
+        r.setAttribute("rx", "2");
+        r.setAttribute("fill", weekend ? "var(--olive)" : "var(--gold)");
+        g.appendChild(r);
+      }
+    }
+  })();
+</script>

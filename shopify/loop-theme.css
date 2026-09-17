@@ -1,0 +1,121 @@
+/* ============================================================
+   LOOP — custom CSS for Shopify
+   Paste into: Online Store > Themes > Customize > Theme settings
+   > scroll to bottom > "Custom CSS", OR into assets/custom.css
+   if you're editing code directly (Dawn loads it automatically).
+
+   This layers brand polish on top of Dawn/Refresh. Set the core
+   colours in Theme settings > Colors first (see loop-shopify-setup.md);
+   this file only handles what the theme editor can't.
+   ============================================================ */
+
+:root {
+  --loop-gold:      #F7DA39;
+  --loop-sunflower: #FFBA4A;
+  --loop-khaki:     #373D20;
+  --loop-olive:     #7B562D;
+  --loop-palm:      #8E9843;
+  --loop-cream:     #F4EDDA;
+
+  --loop-ease-out:    cubic-bezier(0.23, 1, 0.32, 1);
+  --loop-ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
+}
+
+/* --- Display type: force Anton on all headings & buttons ------ */
+/* Load Anton once (Dawn allows @import in custom CSS). */
+@import url('https://fonts.googleapis.com/css2?family=Anton&display=swap');
+
+h1, h2, h3, .h0, .h1, .h2, .h3,
+.button, button, .btn,
+.card__heading, .price, .product__title > * {
+  font-family: 'Anton', var(--font-heading-family, 'Arial Narrow'), sans-serif !important;
+  font-weight: 400 !important;
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
+}
+
+/* Body copy stays on the theme's body font (set to Inter in settings) */
+p, li, .product__description, input, textarea, select {
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+/* --- Sticky nav in Dark Khaki ------------------------------- */
+.header-wrapper {
+  position: sticky;
+  top: 0;
+  z-index: 6;
+  background: var(--loop-khaki);
+  transition: box-shadow 220ms var(--loop-ease-out);
+}
+.header-wrapper.scrolled-past-header,
+.header-wrapper--border-bottom.scrolled-past-header {
+  box-shadow: 0 10px 30px -12px rgba(0,0,0,0.55);
+}
+.header__heading-link .h2,
+.header__inline-menu .header__menu-item,
+.header__icons .icon {
+  color: var(--loop-gold) !important;
+}
+.header__menu-item:hover span { color: var(--loop-sunflower) !important; }
+
+/* --- Buttons: rounded, bold, brand colours ------------------ */
+.button,
+.shopify-payment-button__button--unbranded,
+button.button {
+  border-radius: 6px !important;
+  padding: 0.9rem 1.7rem !important;
+  transition: transform 150ms var(--loop-ease-out),
+              background-color 180ms var(--loop-ease-out),
+              color 180ms var(--loop-ease-out) !important;
+}
+.button--primary,
+.shopify-payment-button__button--unbranded {
+  background: var(--loop-khaki) !important;
+  color: var(--loop-gold) !important;
+  border-color: var(--loop-khaki) !important;
+}
+.button--primary:hover {
+  background: var(--loop-gold) !important;
+  color: var(--loop-khaki) !important;
+}
+.button:active { transform: scale(0.97); }
+
+.button--secondary {
+  background: transparent !important;
+  color: var(--loop-khaki) !important;
+  border: 2px solid var(--loop-olive) !important;
+}
+.button--secondary:hover {
+  background: var(--loop-olive) !important;
+  color: var(--loop-cream) !important;
+}
+
+/* --- Product cards: generous cream space, Palm Leaf badges --- */
+.card-wrapper { transition: transform 200ms var(--loop-ease-out); }
+.card-wrapper:hover { transform: translateY(-5px); }
+
+.card__badge .badge,
+.badge {
+  background: var(--loop-palm) !important;
+  color: var(--loop-cream) !important;
+  border: none !important;
+  border-radius: 3px !important;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-size: 0.66rem;
+}
+/* "Sale" badge -> Sunflower; keeps "New" on Palm Leaf */
+.badge--sale, .price--on-sale .badge { background: var(--loop-sunflower) !important; color: var(--loop-khaki) !important; }
+
+/* --- Footer in Dark Khaki ---------------------------------- */
+.footer { background: var(--loop-khaki); color: var(--loop-cream); }
+.footer a, .footer__list-social .icon { color: var(--loop-cream); }
+.footer a:hover { color: var(--loop-gold); }
+.footer__content-bottom { border-top: 1px solid rgba(255,255,255,0.12); }
+
+/* --- Reduced motion --------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  .card-wrapper, .button { transition: none !important; }
+  .card-wrapper:hover, .button:active { transform: none !important; }
+}
