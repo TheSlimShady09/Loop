@@ -30,6 +30,9 @@ LOOP-store/
 ├── ugc-images/                       Six generated @loop.wear tiles — miles,
 │                                     layers, mornings, nights, weekends, reps.
 │
+├── vercel.json                       Static-host routing: / serves the homepage,
+│                                     /dashboard serves the dashboard.
+│
 └── shopify/
     ├── loop-shopify-setup.md         Step-by-step build guide: currency,
     │                                 markets/EN-FR, theme colours + type,
@@ -63,6 +66,21 @@ Hosted versions:
 - Display type: **Anton** (free stand-in for Extenda). Body: **Inter** (per brief).
 - Tagline: **"Made for more"** — used as a full stop; recurs in product copy
   as *"Made for more <noun>"*.
+
+## Deploying
+
+There is no `index.html` at the repo root — the pages live in `prototypes/`.
+`vercel.json` maps them onto clean URLs, so on Vercel:
+
+| URL | Serves |
+| --- | --- |
+| `/` | `prototypes/loop-homepage.html` |
+| `/dashboard` | `prototypes/loop-merchant-dashboard.html` |
+
+Import the repo with **Framework Preset: Other**, no build command and no
+output directory — it is plain static files. The asset paths are relative and
+resolve to `/product-images/`, `/ugc-images/` and `/brand-assets/` from either
+URL, so nothing needs rewriting to deploy.
 
 ## Status / what needs you
 
