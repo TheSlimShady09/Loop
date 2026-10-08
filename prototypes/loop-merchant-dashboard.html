@@ -15,23 +15,23 @@
   :root {
     --gold:      #F7DA39;
     --sunflower: #FFBA4A;
-    --beige:     #E3D5B7;   /* Warm Beige — borrowed from the homepage    */
-    --title:     #8A6A18;   /* Deep Gold — card titles, AA on cream       */
-    --khaki:     #33261E;   /* Espresso — the "black"                     */
-    --olive:     #7B562D;   /* Olive Wood — chart series 2                */
-    --caramel:   #B3822F;   /* Caramel — chart series 3 + positive        */
-    --pumpkin:   #D9752B;   /* semantic: warning                          */
-    --brick:     #B5462E;   /* semantic: critical / down                  */
+    --beige:     #E3D5B7;   /* Warm Beige — the active nav pill           */
+    --title:     #F7DA39;   /* Bright Gold — card titles on black         */
+    --khaki:     #0D0D0D;   /* near-black — type on light pills           */
+    --olive:     #9A6F3C;   /* chart series 2, lifted to read on black     */
+    --caramel:   #D4A24A;   /* chart series 3 + positive                   */
+    --pumpkin:   #E8853C;   /* semantic: warning                           */
+    --brick:     #E05A3E;   /* semantic: critical / down                   */
 
-    --bg:      #F3EBDA;     /* warm ground */
-    --panel:   #FBF7EC;
-    --panel-2: #F5EEDB;
-    --text:    #33261E;
-    --muted:   #6B5A4A;
-    --line:    #E6DAC6;
+    --bg:      #000000;     /* black ground */
+    --panel:   #111111;
+    --panel-2: #181818;
+    --text:    #F4F4F4;
+    --muted:   #9B9B9B;
+    --line:    #262626;
 
-    --sidebar-bg: #2A1E17;  /* espresso */
-    --sidebar-fg: #EFE3D2;
+    --sidebar-bg: #0A0A0A;
+    --sidebar-fg: #EDEDED;
 
     --ok:   var(--caramel);
     --warn: var(--pumpkin);
@@ -43,22 +43,22 @@
 
   @media (prefers-color-scheme: dark) {
     :root:not([data-theme="light"]) {
-      --bg:      #17100C;
-      --panel:   #201711;
-      --panel-2: #291E16;
-      --text:    #F0E6D9;
-      --muted:   #A89684;
-      --line:    #38291F;
+      --bg:      #000000;
+      --panel:   #111111;
+      --panel-2: #181818;
+      --text:    #F4F4F4;
+      --muted:   #9B9B9B;
+      --line:    #262626;
       --title:   #F7DA39;
     }
   }
   :root[data-theme="dark"] {
-    --bg:      #17100C;
-    --panel:   #201711;
-    --panel-2: #291E16;
-    --text:    #F0E6D9;
-    --muted:   #A89684;
-    --line:    #38291F;
+    --bg:      #000000;
+    --panel:   #111111;
+    --panel-2: #181818;
+    --text:    #F4F4F4;
+    --muted:   #9B9B9B;
+    --line:    #262626;
     --title:   #F7DA39;
   }
 
@@ -91,6 +91,7 @@
 
   .sidebar {
     background: var(--sidebar-bg);
+    border-right: 1px solid var(--line);
     color: var(--sidebar-fg);
     padding: 1.1rem 0.9rem;
     display: flex;
@@ -104,7 +105,7 @@
   .brand { display: flex; align-items: center; gap: 0.6rem; padding: 0.2rem 0.4rem; }
   .brand svg { width: 30px; height: 30px; color: var(--gold); flex: none; }
   .brand b { font-family: "Anton", sans-serif; font-size: 1.3rem; letter-spacing: 0.02em; color: var(--gold); }
-  .brand span { font-size: 0.66rem; letter-spacing: 0.18em; text-transform: uppercase; color: #BFAE99; display: block; }
+  .brand span { font-size: 0.66rem; letter-spacing: 0.18em; text-transform: uppercase; color: #8A8A8A; display: block; }
 
   .nav { display: flex; flex-direction: column; gap: 2px; }
   .nav button {
@@ -117,14 +118,14 @@
     font-size: 0.86rem;
     font-weight: 500;
     cursor: pointer;
-    color: #DCCDBA;
+    color: #C9C9C9;
     transition: background-color 150ms var(--ease-out), color 150ms var(--ease-out);
   }
-  .nav button:hover { background: rgba(227,213,183,0.12); color: var(--beige); }
+  .nav button:hover { background: rgba(255,255,255,0.08); color: var(--beige); }
   .nav button[aria-current="true"] { background: var(--beige); color: var(--khaki); font-weight: 600; }
   .nav .dot { width: 7px; height: 7px; border-radius: 50%; background: currentColor; flex: none; opacity: 0.6; }
 
-  .sidebar__foot { margin-top: auto; font-size: 0.72rem; color: #A08E7C; padding: 0 0.4rem; }
+  .sidebar__foot { margin-top: auto; font-size: 0.72rem; color: #7A7A7A; padding: 0 0.4rem; }
 
   /* ---------- topbar ---------- */
   .main { display: flex; flex-direction: column; min-width: 0; }
@@ -230,7 +231,7 @@
     padding: 0.15rem 0.45rem; border-radius: 4px; background: var(--panel-2); border: 1px solid var(--line);
   }
   .tag--ok  { background: color-mix(in srgb, var(--ok) 20%, transparent);  border-color: transparent; color: color-mix(in srgb, var(--ok) 75%, var(--text)); }
-  .tag--warn{ background: color-mix(in srgb, var(--warn) 28%, transparent); border-color: transparent; color: var(--khaki); }
+  .tag--warn{ background: color-mix(in srgb, var(--warn) 28%, transparent); border-color: transparent; color: color-mix(in srgb, var(--warn) 65%, var(--text)); }
   .tag--bad { background: color-mix(in srgb, var(--bad) 20%, transparent); border-color: transparent; color: color-mix(in srgb, var(--bad) 80%, var(--text)); }
 
   /* ---------- bar list ---------- */

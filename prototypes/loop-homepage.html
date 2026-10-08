@@ -27,6 +27,7 @@
     --olive:     #7B562D;   /* Olive Wood — borders, secondary            */
 
     --bg:      #F4EDDA;     /* cream — the "white"                        */
+    --on-dark: #F4EDDA;     /* cream that never flips — type on dark bands */
     --surface: #FBF7EC;
     --text:    #33261E;
     --muted:   #6B5A4A;
@@ -121,6 +122,110 @@
   .skip:focus { top: 0.6rem; }
 
   /* ============================================================
+     entry gate — man / woman
+     ============================================================ */
+  body.gate-open { overflow: hidden; }
+
+  .gate {
+    position: fixed;
+    inset: 0;
+    z-index: 300;
+    background: #160F0A;
+    color: var(--on-dark);
+    display: grid;
+    place-items: center;
+    padding: var(--pad);
+    opacity: 1;
+    transition: opacity 420ms var(--ease-out);
+  }
+  .gate[hidden] { display: none; }
+  .gate.is-closing { opacity: 0; pointer-events: none; }
+
+  .gate__panel { width: min(100%, 900px); display: grid; gap: 0.9rem; text-align: center; }
+  .gate__eyebrow {
+    margin: 0;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--gold);
+  }
+  .gate__title { font-size: clamp(1.9rem, 6vw, 3.2rem); margin: 0 0 0.5rem; }
+
+  .gate__grid { display: grid; gap: 0.8rem; grid-template-columns: 1fr 1fr; }
+  .gate__card {
+    position: relative;
+    display: block;
+    padding: 0;
+    background: none;
+    border: 1px solid rgba(244,237,218,0.22);
+    border-radius: var(--radius);
+    overflow: hidden;
+    cursor: pointer;
+    aspect-ratio: 4 / 5;
+    max-height: 58vh;
+    transition: transform 220ms var(--ease-out), border-color 220ms var(--ease-out);
+  }
+  .gate__card img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 500ms var(--ease-out);
+  }
+  .gate__card::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, transparent 42%, rgba(12,8,5,0.82));
+  }
+  .gate__card:hover { transform: translateY(-4px); border-color: var(--gold); }
+  .gate__card:hover img { transform: scale(1.05); }
+  .gate__card:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
+  .gate__name {
+    position: absolute;
+    inset: auto 0 0 0;
+    z-index: 1;
+    padding: 0.9rem;
+    font-family: "Anton", sans-serif;
+    text-transform: uppercase;
+    font-size: clamp(1.3rem, 4vw, 2rem);
+    letter-spacing: 0.04em;
+    color: var(--on-dark);
+  }
+  .gate__skip {
+    justify-self: center;
+    margin-top: 0.3rem;
+    padding: 0.6rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #CFC0AC;
+    font: inherit;
+    font-size: 0.84rem;
+    text-decoration: underline;
+    text-underline-offset: 4px;
+  }
+  .gate__skip:hover { color: var(--gold); }
+
+  .nav__shopfor {
+    background: none;
+    border: 1px solid rgba(244,237,218,0.28);
+    border-radius: 999px;
+    color: inherit;
+    font: inherit;
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    padding: 0.32rem 0.7rem;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: color 180ms var(--ease-out), border-color 180ms var(--ease-out);
+  }
+  .nav__shopfor[hidden] { display: none; }
+  .nav__shopfor:hover { color: var(--gold); border-color: var(--gold); }
+
+  /* ============================================================
      buttons
      ============================================================ */
   .btn {
@@ -153,7 +258,7 @@
     --btn-fg: var(--hero-ink);
     border-color: var(--olive);
   }
-  .btn--ghost:hover { --btn-bg: var(--olive); --btn-fg: var(--bg); border-color: var(--olive); }
+  .btn--ghost:hover { --btn-bg: var(--olive); --btn-fg: var(--on-dark); border-color: var(--olive); }
 
   .btn--onkhaki { --btn-bg: var(--gold); --btn-fg: var(--khaki); border-color: var(--gold); }
   .btn--onkhaki:hover { --btn-bg: var(--sunflower); --btn-fg: var(--khaki); border-color: var(--sunflower); }
@@ -166,7 +271,7 @@
     top: 0;
     z-index: 100;
     background: var(--nav-bg);
-    color: var(--bg);
+    color: var(--on-dark);
     transform: translateY(-100%);
     animation: nav-drop 420ms var(--ease-out) 60ms forwards;
     transition: box-shadow 220ms var(--ease-out);
@@ -214,6 +319,7 @@
      hero
      ============================================================ */
   .hero {
+    position: relative;
     background: var(--beige);
     color: var(--hero-ink);
     padding-block: clamp(2.6rem, 8vw, 5rem) clamp(2.2rem, 6vw, 3.5rem);
@@ -222,6 +328,7 @@
     align-items: center;
     overflow: hidden;
   }
+  .hero > .wrap { position: relative; z-index: 1; }
   .hero__grid { display: grid; gap: clamp(1.4rem, 4vw, 2rem); width: 100%; }
 
   .hero .eyebrow {
@@ -276,6 +383,30 @@
   }
 
   @keyframes rise { to { opacity: 1; transform: translateY(0); } }
+
+  /* hero background: a looping clip when video/ holds one, the still until then */
+  .hero__bg { position: absolute; inset: 0; z-index: 0; overflow: hidden; }
+  .hero__still,
+  .hero__video {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .hero__video { opacity: 0; transition: opacity 700ms var(--ease-out); }
+  .hero--video .hero__video { opacity: 1; }
+  .hero__veil {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg,
+      rgba(227,213,183,0.97) 0%,
+      rgba(227,213,183,0.92) 42%,
+      rgba(227,213,183,0.78) 100%);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .hero__video { display: none; }
+  }
 
   .hero__copy { display: grid; gap: 1rem; align-content: end; }
   .hero__media { justify-self: center; }
@@ -354,7 +485,7 @@
     padding: 1.1rem;
     border-radius: var(--radius);
     text-decoration: none;
-    color: var(--bg);
+    color: var(--on-dark);
     background: var(--khaki);
     overflow: hidden;
     isolation: isolate;
@@ -481,7 +612,7 @@
     color: var(--khaki);
   }
   .badge--best { background: var(--sunflower); color: var(--khaki); }
-  .badge--low  { background: var(--olive); color: var(--bg); }
+  .badge--low  { background: var(--olive); color: var(--on-dark); }
   .pcard__body { padding: 0.85rem 0.9rem 1rem; display: grid; gap: 0.15rem; }
   .pcard__name { font-family: "Anton", sans-serif; text-transform: uppercase; font-size: 1.05rem; letter-spacing: 0.02em; }
   .pcard__desc { font-size: 0.8rem; color: var(--muted); }
@@ -546,7 +677,7 @@
      ============================================================ */
   .footer {
     background: var(--footer-bg);
-    color: var(--bg);
+    color: var(--on-dark);
   }
   .footer__inner { padding-block: clamp(2.6rem, 7vw, 4.2rem) 2rem; }
 
@@ -695,7 +826,7 @@
   /* ============================================================
      3D product showcase
      ============================================================ */
-  .showcase { background: var(--olive); color: var(--bg); overflow: hidden; }
+  .showcase { background: var(--olive); color: var(--on-dark); overflow: hidden; }
   .band-beige { background: var(--beige-3); }
   .showcase__grid {
     display: grid;
@@ -787,6 +918,27 @@
 <a class="skip" href="#main">Skip to content</a>
 
 <!-- ============================================================
+     ENTRY GATE — shown once, remembered after that
+     ============================================================ -->
+<div class="gate" id="gate" role="dialog" aria-modal="true" aria-labelledby="gate-title" hidden>
+  <div class="gate__panel">
+    <p class="gate__eyebrow">Welcome to LOOP</p>
+    <h2 class="gate__title" id="gate-title">Where do we start?</h2>
+    <div class="gate__grid">
+      <button class="gate__card" type="button" data-shop="men">
+        <img src="../ugc-images/loop-ugc-reps.webp" alt="" />
+        <span class="gate__name">Man</span>
+      </button>
+      <button class="gate__card" type="button" data-shop="women">
+        <img src="../ugc-images/loop-ugc-miles.webp" alt="" />
+        <span class="gate__name">Woman</span>
+      </button>
+    </div>
+    <button class="gate__skip" type="button" data-shop="all">Show me everything</button>
+  </div>
+</div>
+
+<!-- ============================================================
      reusable rope glyph (the LOOP signature motif)
      ============================================================ -->
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
@@ -824,6 +976,7 @@
       <a href="#ugc">@loop.wear</a>
     </nav>
 
+    <button class="nav__shopfor" id="shopfor" type="button" hidden></button>
     <a class="nav__cart" href="#">Bag (0)</a>
   </div>
 </header>
@@ -834,6 +987,15 @@
        HERO
        ============================================================ -->
   <section class="hero" aria-labelledby="wm">
+    <div class="hero__bg" aria-hidden="true">
+      <img class="hero__still" src="../ugc-images/loop-ugc-weekends.webp" alt="" />
+      <video class="hero__video" id="hero-video" autoplay muted loop playsinline preload="auto">
+        <source src="../video/loop-hero-loop.webm" type="video/webm" />
+        <source src="../video/loop-hero-loop.mp4" type="video/mp4" />
+      </video>
+      <div class="hero__veil"></div>
+    </div>
+
     <div class="wrap hero__grid">
       <p class="eyebrow">New brand · Shipping across Canada</p>
 
@@ -1231,6 +1393,59 @@
     });
 
     // language toggle (visual only in this prototype)
+    // hero clip: fade it in only once it can actually play
+    var heroVideo = document.getElementById("hero-video");
+    if (heroVideo) {
+      heroVideo.addEventListener("canplay", function () {
+        var hero = heroVideo.closest(".hero");
+        if (hero) hero.classList.add("hero--video");
+      });
+    }
+
+    // entry gate — asked once, then remembered
+    (function () {
+      var gate = document.getElementById("gate");
+      if (!gate) return;
+      var chip = document.getElementById("shopfor");
+      var KEY = "loop-shop";
+      var LABEL = { men: "Shop: Man", women: "Shop: Woman", all: "Shop: All" };
+
+      function apply(choice) {
+        document.documentElement.setAttribute("data-shop", choice);
+        if (chip) { chip.textContent = LABEL[choice] || LABEL.all; chip.hidden = false; }
+      }
+      function closeGate(choice) {
+        try { localStorage.setItem(KEY, choice); } catch (e) {}
+        apply(choice);
+        gate.classList.add("is-closing");
+        document.body.classList.remove("gate-open");
+        setTimeout(function () {
+          gate.hidden = true;
+          gate.classList.remove("is-closing");
+          if (chip) chip.focus();
+        }, 420);
+      }
+      function openGate() {
+        gate.hidden = false;
+        document.body.classList.add("gate-open");
+        var first = gate.querySelector(".gate__card");
+        if (first) first.focus();
+      }
+
+      var saved = null;
+      try { saved = localStorage.getItem(KEY); } catch (e) {}
+      if (saved) { apply(saved); } else { openGate(); }
+
+      gate.addEventListener("click", function (e) {
+        var btn = e.target.closest("[data-shop]");
+        if (btn) closeGate(btn.getAttribute("data-shop"));
+      });
+      gate.addEventListener("keydown", function (e) {
+        if (e.key === "Escape") closeGate("all");
+      });
+      if (chip) chip.addEventListener("click", openGate);
+    })();
+
     var langBtns = document.querySelectorAll(".lang button");
     langBtns.forEach(function (b) {
       b.addEventListener("click", function () {
