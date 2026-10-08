@@ -141,7 +141,14 @@
   .gate[hidden] { display: none; }
   .gate.is-closing { opacity: 0; pointer-events: none; }
 
-  .gate__panel { width: min(100%, 900px); display: grid; gap: 0.9rem; text-align: center; }
+  .gate__panel {
+    width: min(100%, 900px);
+    max-height: 100%;
+    overflow-y: auto;
+    display: grid;
+    gap: 0.9rem;
+    text-align: center;
+  }
   .gate__eyebrow {
     margin: 0;
     font-size: 0.72rem;
@@ -152,7 +159,7 @@
   }
   .gate__title { font-size: clamp(1.9rem, 6vw, 3.2rem); margin: 0 0 0.5rem; }
 
-  .gate__grid { display: grid; gap: 0.8rem; grid-template-columns: 1fr 1fr; }
+  .gate__grid { display: grid; gap: 0.8rem; grid-template-columns: 1fr; }
   .gate__card {
     position: relative;
     display: block;
@@ -162,8 +169,8 @@
     border-radius: var(--radius);
     overflow: hidden;
     cursor: pointer;
-    aspect-ratio: 4 / 5;
-    max-height: 58vh;
+    aspect-ratio: 3 / 2;
+    max-height: 30vh;
     transition: transform 220ms var(--ease-out), border-color 220ms var(--ease-out);
   }
   .gate__card img {
@@ -206,6 +213,11 @@
     text-underline-offset: 4px;
   }
   .gate__skip:hover { color: var(--gold); }
+
+  @media (min-width: 560px) {
+    .gate__grid { grid-template-columns: 1fr 1fr; }
+    .gate__card { aspect-ratio: 4 / 5; max-height: 56vh; }
+  }
 
   .nav__shopfor {
     background: none;
@@ -1436,9 +1448,25 @@
       try { saved = localStorage.getItem(KEY); } catch (e) {}
       if (saved) { apply(saved); } else { openGate(); }
 
+      // last resort: if the overlay is somehow still up after 30s with no
+      // interaction, let the page through rather than block it forever
+      setTimeout(function () {
+        if (!gate.hidden) { gate.hidden = true; document.body.classList.remove("gate-open"); }
+      }, 30000);
+
       gate.addEventListener("click", function (e) {
-        var btn = e.target.closest("[data-shop]");
-        if (btn) closeGate(btn.getAttribute("data-shop"));
+        // walk up by hand: older engines have no Element.closest, and a
+        // throw here would leave the overlay covering the whole site
+        var node = e.target;
+        while (node && node !== gate) {
+          if (node.getAttribute && node.getAttribute("data-shop")) {
+            closeGate(node.getAttribute("data-shop"));
+            return;
+          }
+          node = node.parentNode;
+        }
+        // clicking the backdrop itself dismisses too
+        if (e.target === gate) closeGate("all");
       });
       gate.addEventListener("keydown", function (e) {
         if (e.key === "Escape") closeGate("all");
