@@ -122,6 +122,86 @@
   .skip:focus { top: 0.6rem; }
 
   /* ============================================================
+     loading screen — clears itself even with no JS
+     ============================================================ */
+  .loader {
+    position: fixed;
+    inset: 0;
+    z-index: 400;
+    background: #160F0A;
+    display: grid;
+    place-content: center;
+    justify-items: center;
+    gap: 1.3rem;
+    animation: loaderOut 500ms var(--ease-out) 2000ms forwards;
+  }
+  .loader svg { width: min(46vw, 240px); height: auto; display: block; }
+  .loader__bar {
+    width: min(56vw, 240px);
+    height: 2px;
+    border-radius: 2px;
+    background: rgba(244,237,218,0.18);
+    overflow: hidden;
+  }
+  .loader__bar span {
+    display: block;
+    height: 100%;
+    background: var(--gold);
+    transform: scaleX(0);
+    transform-origin: left;
+    animation: loaderFill 1450ms var(--ease-out) forwards;
+  }
+  .loader__word {
+    font-size: 0.68rem;
+    letter-spacing: 0.26em;
+    text-transform: uppercase;
+    color: #8C7F6B;
+  }
+  .loader.is-done { animation: loaderOut 420ms var(--ease-out) forwards; }
+  @keyframes loaderFill { to { transform: scaleX(1); } }
+  @keyframes loaderOut { to { opacity: 0; visibility: hidden; } }
+  @media (prefers-reduced-motion: reduce) {
+    .loader { animation-delay: 400ms; }
+    .loader__bar span { animation-duration: 400ms; }
+  }
+
+  /* ============================================================
+     shop — men / women / accessories
+     ============================================================ */
+  .shop__tabs { display: flex; gap: 0.4rem; flex-wrap: wrap; }
+  .shop__tab {
+    background: none;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    color: var(--muted);
+    font-family: "Anton", sans-serif;
+    font-size: 0.88rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 0.45rem 1.05rem;
+    cursor: pointer;
+    transition: background-color 180ms var(--ease-out),
+                color 180ms var(--ease-out),
+                border-color 180ms var(--ease-out);
+  }
+  .shop__tab:hover { color: var(--text); border-color: var(--olive); }
+  .shop__tab[aria-selected="true"] {
+    background: var(--khaki);
+    border-color: var(--khaki);
+    color: var(--gold);
+  }
+  .shop__panel[hidden] { display: none; }
+  .shop__grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.8rem; }
+  @media (min-width: 780px) { .shop__grid { grid-template-columns: repeat(4, 1fr); } }
+  .pcard__sizes {
+    margin-top: 0.35rem;
+    font-size: 0.66rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  /* ============================================================
      entry gate — man / woman
      ============================================================ */
   body.gate-open { overflow: hidden; }
@@ -927,6 +1007,17 @@
 
 <body>
 
+<!-- ============================================================
+     LOADING SCREEN — CSS clears it even if the script never runs
+     ============================================================ -->
+<div class="loader" id="loader" aria-hidden="true">
+  <svg viewBox="0 0 360 90" role="img" aria-label="LOOP">
+    <text x="0" y="70" font-family="Anton, sans-serif" font-size="86" letter-spacing="-3" fill="#F7DA39">LOOP</text>
+  </svg>
+  <div class="loader__bar"><span></span></div>
+  <p class="loader__word">Made for more</p>
+</div>
+
 <a class="skip" href="#main">Skip to content</a>
 
 <!-- ============================================================
@@ -981,7 +1072,7 @@
     </a>
 
     <nav class="nav__links" aria-label="Primary">
-      <a href="#collections">Shop</a>
+      <a href="#shop">Shop</a>
       <a href="#showcase">The Hoodie</a>
       <a href="#best">Best sellers</a>
       <a href="#story">Story</a>
@@ -1099,6 +1190,149 @@
   <!-- ============================================================
        BRAND STORY
        ============================================================ -->
+  <!-- ============================================================
+       SHOP — men / women / accessories
+       ============================================================ -->
+  <section id="shop" class="reveal">
+    <div class="wrap section-head">
+      <div>
+        <p class="eyebrow">Everything in stock</p>
+        <h2>Shop</h2>
+      </div>
+      <div class="shop__tabs" role="tablist" aria-label="Shop by">
+        <button class="shop__tab" type="button" role="tab" aria-selected="true"  aria-controls="shop-men"         data-tab="men">Men</button>
+        <button class="shop__tab" type="button" role="tab" aria-selected="false" aria-controls="shop-women"       data-tab="women">Women</button>
+        <button class="shop__tab" type="button" role="tab" aria-selected="false" aria-controls="shop-accessories" data-tab="accessories">Accessories</button>
+      </div>
+    </div>
+
+    <div class="wrap">
+    <div class="shop__panel" id="shop-men" role="tabpanel" aria-label="Men">
+      <div class="shop__grid">
+        <a class="pcard" href="#" style="--tone:#D6C49F">
+          <div class="pcard__media"><span class="badge badge--best">Bestseller</span><img src="../product-images/loop-hoodie-cutout.webp" alt="The Loop Hoodie in gold" loading="lazy" /></div>
+          <div class="pcard__body">
+            <span class="pcard__name">The Loop Hoodie</span>
+            <span class="pcard__desc">480 gsm brushed-back fleece &middot; oversized</span>
+            <span class="pcard__price">$118.00 CAD</span>
+            <span class="pcard__sizes">XS &middot; S &middot; M &middot; L &middot; XL &middot; XXL</span>
+          </div>
+        </a>
+        <a class="pcard" href="#" style="--tone:#33261E">
+          <div class="pcard__media"><img src="../product-images/loop-tee-beige-cutout.webp" alt="Rope Logo Tee in beige" loading="lazy" /></div>
+          <div class="pcard__body">
+            <span class="pcard__name">Rope Logo Tee</span>
+            <span class="pcard__desc">240 gsm combed cotton &middot; boxy</span>
+            <span class="pcard__price">$48.00 CAD</span>
+            <span class="pcard__sizes">XS &middot; S &middot; M &middot; L &middot; XL &middot; XXL</span>
+          </div>
+        </a>
+        <a class="pcard" href="#" style="--tone:#EFE5D0">
+          <div class="pcard__media"><span class="badge badge--low">Last few</span><img src="../product-images/loop-jacket-khaki-cutout.webp" alt="Khaki Work Jacket" loading="lazy" /></div>
+          <div class="pcard__body">
+            <span class="pcard__name">Khaki Work Jacket</span>
+            <span class="pcard__desc">Waxed cotton canvas &middot; chore cut</span>
+            <span class="pcard__price">$210.00 CAD</span>
+            <span class="pcard__sizes">XS &middot; S &middot; M &middot; L &middot; XL &middot; XXL</span>
+          </div>
+        </a>
+        <a class="pcard" href="#" style="--tone:#7B562D">
+          <div class="pcard__media"><img src="../product-images/loop-hoodie-cutout.webp" alt="The Loop Hoodie in gold" loading="lazy" /></div>
+          <div class="pcard__body">
+            <span class="pcard__name">Every-Mile Crew</span>
+            <span class="pcard__desc">Brushed fleece &middot; olive</span>
+            <span class="pcard__price">$88.00 CAD</span>
+            <span class="pcard__sizes">XS &middot; S &middot; M &middot; L &middot; XL &middot; XXL</span>
+          </div>
+        </a>
+      </div>
+    </div>
+
+    <div class="shop__panel" id="shop-women" role="tabpanel" aria-label="Women" hidden>
+      <div class="shop__grid">
+        <a class="pcard" href="#" style="--tone:#7B562D">
+          <div class="pcard__media"><span class="badge">New</span><img src="../product-images/loop-hoodie-cutout.webp" alt="The Loop Hoodie in gold" loading="lazy" /></div>
+          <div class="pcard__body">
+            <span class="pcard__name">The Loop Hoodie &mdash; Cropped</span>
+            <span class="pcard__desc">480 gsm fleece &middot; cropped hem</span>
+            <span class="pcard__price">$112.00 CAD</span>
+            <span class="pcard__sizes">XS &middot; S &middot; M &middot; L &middot; XL &middot; XXL</span>
+          </div>
+        </a>
+        <a class="pcard" href="#" style="--tone:#D6C49F">
+          <div class="pcard__media"><img src="../product-images/loop-tee-beige-cutout.webp" alt="Rope Logo Tee in beige" loading="lazy" /></div>
+          <div class="pcard__body">
+            <span class="pcard__name">Rope Logo Tee &mdash; Relaxed</span>
+            <span class="pcard__desc">240 gsm cotton &middot; relaxed</span>
+            <span class="pcard__price">$48.00 CAD</span>
+            <span class="pcard__sizes">XS &middot; S &middot; M &middot; L &middot; XL &middot; XXL</span>
+          </div>
+        </a>
+        <a class="pcard" href="#" style="--tone:#33261E">
+          <div class="pcard__media"><img src="../product-images/loop-jacket-khaki-cutout.webp" alt="Khaki Work Jacket" loading="lazy" /></div>
+          <div class="pcard__body">
+            <span class="pcard__name">Khaki Work Jacket</span>
+            <span class="pcard__desc">Waxed canvas &middot; boxy fit</span>
+            <span class="pcard__price">$210.00 CAD</span>
+            <span class="pcard__sizes">XS &middot; S &middot; M &middot; L &middot; XL &middot; XXL</span>
+          </div>
+        </a>
+        <a class="pcard" href="#" style="--tone:#EFE5D0">
+          <div class="pcard__media"><span class="badge">New</span><img src="../product-images/loop-hoodie-cutout.webp" alt="The Loop Hoodie in gold" loading="lazy" /></div>
+          <div class="pcard__body">
+            <span class="pcard__name">Every-Mile Crew &mdash; Cream</span>
+            <span class="pcard__desc">Brushed fleece &middot; cream</span>
+            <span class="pcard__price">$88.00 CAD</span>
+            <span class="pcard__sizes">XS &middot; S &middot; M &middot; L &middot; XL &middot; XXL</span>
+          </div>
+        </a>
+      </div>
+    </div>
+
+    <div class="shop__panel" id="shop-accessories" role="tabpanel" aria-label="Accessories" hidden>
+      <div class="shop__grid">
+        <a class="pcard" href="#" style="--tone:#33261E">
+          <div class="pcard__media"><span class="badge badge--best">Bestseller</span><img src="../product-images/loop-beanie-gold-cutout.webp" alt="Lasso Beanie in gold" loading="lazy" /></div>
+          <div class="pcard__body">
+            <span class="pcard__name">Lasso Beanie</span>
+            <span class="pcard__desc">Merino rib knit &middot; folded cuff</span>
+            <span class="pcard__price">$34.00 CAD</span>
+            <span class="pcard__sizes">One size</span>
+          </div>
+        </a>
+        <a class="pcard" href="#" style="--tone:#D6C49F">
+          <div class="pcard__media"><svg aria-hidden="true"><use href="#rope"/></svg></div>
+          <div class="pcard__body">
+            <span class="pcard__name">Loop Cap</span>
+            <span class="pcard__desc">Washed twill &middot; strap back</span>
+            <span class="pcard__price">$42.00 CAD</span>
+            <span class="pcard__sizes">One size</span>
+          </div>
+        </a>
+        <a class="pcard" href="#" style="--tone:#7B562D">
+          <div class="pcard__media"><svg aria-hidden="true"><use href="#rope"/></svg></div>
+          <div class="pcard__body">
+            <span class="pcard__name">Rope Socks, 2-pack</span>
+            <span class="pcard__desc">Combed cotton &middot; ribbed</span>
+            <span class="pcard__price">$22.00 CAD</span>
+            <span class="pcard__sizes">One size</span>
+          </div>
+        </a>
+        <a class="pcard" href="#" style="--tone:#EFE5D0">
+          <div class="pcard__media"><svg aria-hidden="true"><use href="#rope"/></svg></div>
+          <div class="pcard__body">
+            <span class="pcard__name">Canvas Tote</span>
+            <span class="pcard__desc">16 oz cotton &middot; 40 × 36 cm</span>
+            <span class="pcard__price">$38.00 CAD</span>
+            <span class="pcard__sizes">One size</span>
+          </div>
+        </a>
+      </div>
+    </div>
+
+    </div>
+  </section>
+
   <section id="story" class="story reveal">
     <svg class="story__glyph" aria-hidden="true"><use href="#rope"/></svg>
     <div class="wrap story__inner">
@@ -1414,7 +1648,28 @@
       });
     }
 
-    // entry gate — asked once, then remembered
+    // shop tabs — men / women / accessories
+    var shopTabs = [].slice.call(document.querySelectorAll(".shop__tab"));
+    var shopPanels = [].slice.call(document.querySelectorAll(".shop__panel"));
+    function showShopTab(name) {
+      if (!shopTabs.length) return;
+      var known = false;
+      shopTabs.forEach(function (t) {
+        var on = t.getAttribute("data-tab") === name;
+        if (on) known = true;
+        t.setAttribute("aria-selected", on ? "true" : "false");
+      });
+      if (!known) return;
+      shopPanels.forEach(function (pane) {
+        pane.hidden = pane.id !== "shop-" + name;
+      });
+    }
+    shopTabs.forEach(function (t) {
+      t.addEventListener("click", function () { showShopTab(t.getAttribute("data-tab")); });
+    });
+
+    // entry gate — asked once, then remembered. Opened by the loader.
+    var openEntryGate = function () {};
     (function () {
       var gate = document.getElementById("gate");
       if (!gate) return;
@@ -1425,6 +1680,7 @@
       function apply(choice) {
         document.documentElement.setAttribute("data-shop", choice);
         if (chip) { chip.textContent = LABEL[choice] || LABEL.all; chip.hidden = false; }
+        if (choice === "men" || choice === "women") showShopTab(choice);
       }
       function closeGate(choice) {
         try { localStorage.setItem(KEY, choice); } catch (e) {}
@@ -1442,17 +1698,16 @@
         document.body.classList.add("gate-open");
         var first = gate.querySelector(".gate__card");
         if (first) first.focus();
+        // last resort: never let the overlay sit on the site forever
+        setTimeout(function () {
+          if (!gate.hidden) { gate.hidden = true; document.body.classList.remove("gate-open"); }
+        }, 30000);
       }
 
       var saved = null;
       try { saved = localStorage.getItem(KEY); } catch (e) {}
-      if (saved) { apply(saved); } else { openGate(); }
-
-      // last resort: if the overlay is somehow still up after 30s with no
-      // interaction, let the page through rather than block it forever
-      setTimeout(function () {
-        if (!gate.hidden) { gate.hidden = true; document.body.classList.remove("gate-open"); }
-      }, 30000);
+      if (saved) apply(saved);
+      openEntryGate = function () { if (!saved) openGate(); };
 
       gate.addEventListener("click", function (e) {
         // walk up by hand: older engines have no Element.closest, and a
@@ -1465,13 +1720,34 @@
           }
           node = node.parentNode;
         }
-        // clicking the backdrop itself dismisses too
         if (e.target === gate) closeGate("all");
       });
       gate.addEventListener("keydown", function (e) {
         if (e.key === "Escape") closeGate("all");
       });
       if (chip) chip.addEventListener("click", openGate);
+    })();
+
+    // loading screen — clear it, then hand over to the gate
+    (function () {
+      var loader = document.getElementById("loader");
+      var start = Date.now();
+      var handed = false;
+      var MIN = 1500;   // let the bar actually finish filling
+
+      function finish() {
+        if (loader) loader.classList.add("is-done");
+        openEntryGate();
+      }
+      function done() {
+        if (handed) return;
+        handed = true;
+        setTimeout(finish, Math.max(0, MIN - (Date.now() - start)));
+      }
+      if (document.readyState === "complete") { done(); }
+      else { window.addEventListener("load", done); }
+      // matches the CSS fallback, so a stalled asset never holds the screen
+      setTimeout(done, 2000);
     })();
 
     var langBtns = document.querySelectorAll(".lang button");
