@@ -135,7 +135,7 @@
     gap: 1.3rem;
     animation: loaderOut 500ms var(--ease-out) 2000ms forwards;
   }
-  .loader svg { width: min(46vw, 240px); height: auto; display: block; }
+  .loader img { width: min(52vw, 300px); height: auto; display: block; }
   .loader__bar {
     width: min(56vw, 240px);
     height: 2px;
@@ -379,9 +379,9 @@
   }
   .nav.is-scrolled { box-shadow: 0 10px 30px -12px rgba(0,0,0,0.55); }
 
-  .nav__logo { display: flex; align-items: center; height: 26px; transform-origin: left center; transition: transform 220ms var(--ease-out); }
+  .nav__logo { display: flex; align-items: center; height: 42px; transform-origin: left center; transition: transform 220ms var(--ease-out); }
   .nav.is-scrolled .nav__logo { transform: scale(0.92); }
-  .nav__logo svg { height: 100%; width: auto; }
+  .nav__logo img { height: 100%; width: auto; display: block; }
 
   .nav__links {
     display: none;
@@ -808,7 +808,7 @@
     grid-template-columns: 1fr;
   }
   .footer__brand { display: grid; gap: 1rem; max-width: 34ch; }
-  .footer__brand svg { height: 22px; width: auto; }
+  .footer__brand img { height: 42px; width: auto; display: block; }
   .footer__brand p { font-size: 0.9rem; color: #CFC0AC; }
 
   .footer__cta h3 { font-size: clamp(1.7rem, 5vw, 2.2rem); margin-bottom: 0.4rem; }
@@ -1011,9 +1011,7 @@
      LOADING SCREEN — CSS clears it even if the script never runs
      ============================================================ -->
 <div class="loader" id="loader" aria-hidden="true">
-  <svg viewBox="0 0 360 90" role="img" aria-label="LOOP">
-    <text x="0" y="70" font-family="Anton, sans-serif" font-size="86" letter-spacing="-3" fill="#F7DA39">LOOP</text>
-  </svg>
+  <img src="../brand-assets/loop-logo-gold.webp" alt="" width="736" height="339" />
   <div class="loader__bar"><span></span></div>
   <p class="loader__word">Made for more</p>
 </div>
@@ -1065,10 +1063,7 @@
 <header class="nav" id="nav">
   <div class="wrap nav__inner">
     <a class="nav__logo" href="#main" aria-label="LOOP — home">
-      <!-- wordmark: gold type, no rope -->
-      <svg viewBox="0 0 360 90" role="img" aria-label="LOOP">
-        <text x="0" y="70" font-family="Anton, sans-serif" font-size="86" letter-spacing="-3" fill="#F7DA39">LOOP</text>
-      </svg>
+      <img src="../brand-assets/loop-logo-gold.webp" alt="" width="736" height="339" />
     </a>
 
     <nav class="nav__links" aria-label="Primary">
@@ -1464,9 +1459,7 @@
 
     <div class="footer__top">
       <div class="footer__brand">
-        <svg viewBox="0 0 360 90" role="img" aria-label="LOOP">
-          <text x="0" y="70" font-family="Anton, sans-serif" font-size="86" letter-spacing="-3" fill="#F4EDDA">LOOP</text>
-        </svg>
+        <img src="../brand-assets/loop-logo-gold.webp" alt="LOOP" width="736" height="339" />
         <p>Heavyweight streetwear, designed in Canada. Made for more.</p>
         <ul class="social">
           <li><a href="#">Instagram</a></li>

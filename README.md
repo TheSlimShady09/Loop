@@ -14,6 +14,10 @@ LOOP-store/
 │                                     Inventory / Marketing, sample CAD data.
 │
 ├── brand-assets/
+│   ├── loop-logo-gold.webp           The logo — liquid-chrome wordmark,
+│   │                                 recoloured gold. Used in the nav, the
+│   │                                 footer, the loader and the dashboard.
+│   ├── loop-logo-gold.png            Same, lossless.
 │   ├── favicon.svg                   L monogram, beige on espresso.
 │   ├── logo-white-on-gold.svg        Header — cream wordmark, gold ground.
 │   ├── logo-black-on-gold.svg        Hero / gold sections — espresso wordmark.

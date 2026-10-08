@@ -102,9 +102,8 @@
     align-self: start;
     height: 100vh;
   }
-  .brand { display: flex; align-items: center; gap: 0.6rem; padding: 0.2rem 0.4rem; }
-  .brand svg { width: 30px; height: 30px; color: var(--gold); flex: none; }
-  .brand b { font-family: "Anton", sans-serif; font-size: 1.3rem; letter-spacing: 0.02em; color: var(--gold); }
+  .brand { display: grid; gap: 0.15rem; padding: 0.2rem 0.4rem; justify-items: start; }
+  .brand img { height: 34px; width: auto; display: block; }
   .brand span { font-size: 0.66rem; letter-spacing: 0.18em; text-transform: uppercase; color: #8A8A8A; display: block; }
 
   .nav { display: flex; flex-direction: column; gap: 2px; }
@@ -284,11 +283,8 @@
   <!-- ================= SIDEBAR ================= -->
   <aside class="sidebar">
     <div class="brand">
-      <svg aria-hidden="true"><use href="#rope"/></svg>
-      <div>
-        <b>LOOP</b>
-        <span>Merchant</span>
-      </div>
+      <img src="../brand-assets/loop-logo-gold.webp" alt="LOOP" width="736" height="339" />
+      <span>Merchant</span>
     </div>
 
     <nav class="nav" id="nav" aria-label="Dashboard sections">
