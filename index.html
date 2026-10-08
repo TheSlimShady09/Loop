@@ -1,0 +1,269 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>LOOP — Liquid Chrome</title>
+<meta name="description" content="LOOP — Canadian streetwear in two modes. Women and Men, cut in liquid chrome." />
+<link rel="icon" href="brand-assets/favicon.svg" type="image/svg+xml" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Rubik+Bubbles&family=Space+Grotesk:wght@400;500;700&display=swap" />
+<link rel="stylesheet" href="css/chrome.css" />
+</head>
+
+<body>
+
+<!-- ============================================================
+     INTRO LOADER — infinity turns, blob breathes, wordmark lands
+     ============================================================ -->
+<div class="loader" id="loader">
+  <div class="loader__stack">
+    <div id="loader-shapes">
+      <img id="loader-inf"  src="images/transitions/infinity-loop.webp" alt="" />
+      <img id="loader-blob" src="images/transitions/loader-blob.webp"   alt="" />
+    </div>
+    <img id="loader-mark" src="brand-assets/loop-logo-chrome.webp" alt="LOOP" />
+    <p class="loader__word">Made for more</p>
+  </div>
+</div>
+
+<!-- ============================================================
+     ENTRY — pick a side
+     ============================================================ -->
+<div class="entry" id="entry" hidden>
+  <p class="entry__intro">Choose your loop</p>
+
+  <button class="entry__half" data-mode="women" type="button">
+    <img src="ugc-images/loop-ugc-miles.webp" alt="" />
+    <span class="entry__label chrome-text">Women</span>
+    <span class="entry__hint">Enter &#10022;</span>
+  </button>
+
+  <img class="entry__seam" id="seam" src="images/transitions/split-seam.webp" alt="" />
+
+  <button class="entry__half" data-mode="men" type="button">
+    <img src="ugc-images/loop-ugc-reps.webp" alt="" />
+    <span class="entry__label chrome-text">Men</span>
+    <span class="entry__hint">Enter &#10022;</span>
+  </button>
+</div>
+
+<!-- ============================================================
+     SITE
+     ============================================================ -->
+<div id="site" hidden>
+
+  <header class="hdr">
+    <a class="hdr__logo" href="#top" aria-label="LOOP — home">
+      <img src="brand-assets/loop-logo-chrome.webp" alt="" />
+    </a>
+    <span class="hdr__mode">Shopping <strong id="mode-label">Women</strong></span>
+    <span class="hdr__spacer"></span>
+    <button class="pill" id="mode-toggle" type="button">
+      Switch to <span id="toggle-label">Men</span> &#8646;
+    </button>
+    <button class="pill pill--cart" id="cart-open" type="button">
+      Bag <span id="cart-count">0</span>
+    </button>
+  </header>
+
+  <main id="top">
+
+    <!-- ---------------- HERO ---------------- -->
+    <section class="hero">
+      <img class="hero__shot" id="hero-shot" src="ugc-images/loop-ugc-layers.webp" alt="" />
+      <div class="hero__veil"></div>
+      <div class="hero__stage"><canvas id="hero-canvas" hidden></canvas></div>
+
+      <div class="hero__inner wrap">
+        <img class="hero__mark" src="brand-assets/loop-logo-chrome.webp" alt="LOOP" />
+        <p class="hero__line">
+          Heavyweight streetwear, poured in Canada. Two modes, one loop &#10022;
+        </p>
+        <button class="btn" id="enter-loop" type="button">Enter the Loop</button>
+      </div>
+    </section>
+
+    <img class="divider" src="images/transitions/divider-band.webp" alt="" />
+
+    <!-- ---------------- THE RING ---------------- -->
+    <section class="sec reveal" id="ring-section">
+      <img class="sphere sphere--a" src="images/transitions/spheres.webp" alt="" />
+      <div class="wrap">
+        <div class="sec__head">
+          <div>
+            <p class="eyebrow">Drag to turn</p>
+            <h2 class="chrome-text">The Loop</h2>
+          </div>
+        </div>
+        <div class="ring__stage"><div class="ring" id="ring"></div></div>
+        <p class="ring__hint">Drag &#183; scroll sideways &#183; click to open</p>
+      </div>
+    </section>
+
+    <!-- ---------------- SHOP ---------------- -->
+    <section class="sec reveal" id="shop">
+      <div class="wrap">
+        <div class="sec__head">
+          <div>
+            <p class="eyebrow"><span class="mode-word">Women</span> &#183; everything in stock</p>
+            <h2 class="chrome-text">Shop</h2>
+          </div>
+          <div class="cats" id="cats"></div>
+        </div>
+        <div class="grid" id="grid"></div>
+      </div>
+    </section>
+
+    <img class="divider" src="images/transitions/divider-band.webp" alt="" />
+
+    <!-- ---------------- ACCESSORIES ---------------- -->
+    <section class="sec reveal" id="accessories">
+      <img class="sphere sphere--b" src="images/transitions/spheres.webp" alt="" />
+      <div class="wrap">
+        <div class="sec__head">
+          <div>
+            <p class="eyebrow">Hardware</p>
+            <h2 class="chrome-text">Accessories</h2>
+          </div>
+        </div>
+        <div class="acc-row" id="acc"></div>
+      </div>
+    </section>
+
+    <!-- ---------------- LOOKBOOK ---------------- -->
+    <section class="lookbook" id="lookbook">
+      <div class="wrap" style="padding-block: 3rem 1.5rem">
+        <p class="eyebrow">Scroll sideways</p>
+        <h2 class="chrome-text">Lookbook</h2>
+      </div>
+      <div class="look-track" id="look-track"></div>
+    </section>
+
+    <!-- ---------------- MANIFESTO ---------------- -->
+    <section class="sec reveal manifesto" id="manifesto">
+      <div class="wrap">
+        <p class="eyebrow">The name</p>
+        <h2 class="chrome-text">One loop.<br />One idea.</h2>
+        <p>
+          No seasonal churn. No throwaway fits. Pieces cut oversized, brushed
+          twice, and built to be worn into the ground &#8212; then bought again.
+        </p>
+      </div>
+    </section>
+
+    <!-- ---------------- NEWSLETTER ---------------- -->
+    <section class="sec reveal" id="newsletter">
+      <div class="wrap">
+        <p class="eyebrow">No spam, just drops</p>
+        <h2 class="chrome-text">Join the Loop</h2>
+        <form class="join" id="join" novalidate style="margin-top: 1.4rem">
+          <label class="sr" for="join-email">Email address</label>
+          <input id="join-email" type="email" placeholder="you@email.com" autocomplete="email" required />
+          <button class="btn" type="submit">Join &#10022;</button>
+        </form>
+        <p class="join-msg" id="join-msg" role="status" aria-live="polite"></p>
+      </div>
+    </section>
+  </main>
+
+  <!-- ---------------- FOOTER ---------------- -->
+  <footer class="ftr">
+    <div class="wrap">
+      <img class="ftr__mark" src="brand-assets/loop-logo-chrome.webp" alt="LOOP" />
+      <div class="ftr__cols">
+        <div>
+          <h4>Shop</h4>
+          <ul>
+            <li><a href="#shop">All</a></li>
+            <li><a href="#accessories">Accessories</a></li>
+            <li><a href="#lookbook">Lookbook</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Help</h4>
+          <ul>
+            <li><a href="#">Size chart</a></li>
+            <li><a href="#">Shipping &amp; returns</a></li>
+            <li><a href="#">Contact</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Brand</h4>
+          <ul>
+            <li><a href="#manifesto">Manifesto</a></li>
+            <li><a href="#">Journal</a></li>
+            <li><a href="#">Stockists</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Social</h4>
+          <ul>
+            <li><a href="#">Instagram</a></li>
+            <li><a href="#">TikTok</a></li>
+            <li><a href="#">Pinterest</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="ftr__bar">
+        <span>&copy; 2026 LOOP Apparel Inc. &#183; Made in Canada &#183; CAD $</span>
+        <span>Currently in <span class="mode-word">Women</span></span>
+      </div>
+    </div>
+  </footer>
+</div>
+
+<!-- ============================================================
+     QUICK VIEW
+     ============================================================ -->
+<div class="modal" id="quick" hidden role="dialog" aria-modal="true" aria-labelledby="q-name">
+  <div class="modal__panel" style="position: relative">
+    <button class="pill modal__close" id="q-close" type="button">Close</button>
+    <!-- quickView() writes the picture in here. Carrying one in the
+         markup would mean shipping an empty src, which resolves to
+         this page and re-requests it. -->
+    <div class="modal__media" id="q-media"></div>
+    <div class="modal__body">
+      <h3 id="q-name" class="chrome-text" style="font-size: 1.8rem"></h3>
+      <p id="q-blurb" style="color: var(--muted); margin: 0"></p>
+      <p class="modal__price" id="q-price"></p>
+      <p class="eyebrow" style="margin: 0.6rem 0 0">Size</p>
+      <div class="row" id="q-sizes"></div>
+      <p class="eyebrow" style="margin: 0.6rem 0 0">Colour</p>
+      <div class="row" id="q-colors"></div>
+      <button class="btn" id="q-add" type="button" style="margin-top: 1rem">Add to bag</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
+     CART
+     ============================================================ -->
+<div class="scrim" id="cart-scrim" hidden></div>
+<aside class="cart" id="cart" hidden aria-label="Bag">
+  <div class="cart__head">
+    <h3 class="chrome-text" style="font-size: 1.5rem">Your bag</h3>
+    <button class="pill" id="cart-close" type="button">Close</button>
+  </div>
+  <ul id="cart-items"></ul>
+  <div class="cart__foot">
+    <div class="cart__sum"><span>Total</span><strong id="cart-total">$0</strong></div>
+    <button class="btn" type="button">Checkout &#10022;</button>
+  </div>
+</aside>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/0.160.0/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js"></script>
+<script>
+  if (window.gsap && window.ScrollTrigger) gsap.registerPlugin(ScrollTrigger);
+</script>
+<script src="js/data.js"></script>
+<script src="js/transitions.js"></script>
+<script src="js/hero3d.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

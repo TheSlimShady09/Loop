@@ -71,6 +71,41 @@ Hosted versions:
 - Tagline: **"Made for more"** — used as a full stop; recurs in product copy
   as *"Made for more <noun>"*.
 
+## The chrome site (`/`)
+
+The root is a single-page rebuild in liquid-chrome / Y2K dress, split
+into WOMEN and MEN modes. It is a separate thing from the beige
+prototypes in `prototypes/`, which stay reachable at `/classic` and
+`/dashboard`.
+
+```
+index.html                  entry screen, both modes, every section
+css/chrome.css              tokens, chrome gradients, mode accents
+js/data.js                  the catalogue: 20 products across both modes
+js/transitions.js           the transition controller (wave, drip, swirl,
+                            splash, ripple, sparkle) — everything that
+                            covers the screen goes through here
+js/hero3d.js                Three.js chrome blob, with a painted canvas
+                            environment instead of an HDR download
+js/app.js                   loader, entry, modes, ring, grid, cart, cursor
+images/transitions/         12 chrome plates, keyed to transparency
+```
+
+Libraries come from CDNs: GSAP + ScrollTrigger, Three.js, Lenis.
+
+**Transitions.** One controller owns them. A route change runs a chrome
+wave across the screen; a mode switch opens the matching swirl as a
+circular mask from the click point; quick view drops the drip curtain;
+clicks leave a ripple and bigger moves a ✦. Each method takes a swap
+callback that fires while the screen is covered, and every one of them
+falls back to a plain call if GSAP is missing — so a failed CDN cannot
+strand the page mid-change.
+
+**Photography is the gap.** Nine of the twenty products reuse the four
+cut-outs and six street frames across fits and colourways; the rest lean
+on chrome plates. Entry, hero and lookbook frames are the same six
+photos. Real shoots would replace all of it.
+
 ## Deploying
 
 There is no `index.html` at the repo root — the pages live in `prototypes/`.

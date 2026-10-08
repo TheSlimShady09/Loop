@@ -1,12 +1,12 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "rewrites": [
-    { "source": "/", "destination": "/prototypes/loop-homepage.html" },
+    { "source": "/classic", "destination": "/prototypes/loop-homepage.html" },
     { "source": "/dashboard", "destination": "/prototypes/loop-merchant-dashboard.html" }
   ],
   "headers": [
     {
-      "source": "/(product-images|ugc-images|brand-assets)/(.*)",
+      "source": "/(product-images|ugc-images|brand-assets|images)/(.*)",
       "headers": [
         { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }
       ]
