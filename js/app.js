@@ -18,7 +18,7 @@ const App = {
      --------------------------------------------------------- */
   init() {
     T.init();
-    this.cursor();
+    this.pointerFx();
     this.smoothScroll();
     this.loader();
     this.entry();
@@ -440,29 +440,25 @@ const App = {
   },
 
   /* ---------------------------------------------------------
-     cursor + smooth scroll
-     --------------------------------------------------------- */
-  cursor() {
-    if (REDUCED || window.matchMedia("(hover: none)").matches) return;
-    const dot = document.createElement("div");
-    dot.className = "cursor";
-    dot.innerHTML = '<span class="cursor__dot"></span>';
-    document.body.appendChild(dot);
-    document.body.classList.add("has-cursor");
+     pointer effects + smooth scroll
 
-    let last = 0;
-    window.addEventListener("pointermove", (e) => {
-      gsap.to(dot, { x: e.clientX, y: e.clientY, duration: 0.18, ease: "power2.out" });
-      const now = Date.now();
-      if (now - last > 95) { last = now; T.sparkle(e.clientX, e.clientY, 0.3); }
-      $$(".sphere").forEach((s, i) => {
-        gsap.to(s, { x: (e.clientX / window.innerWidth - 0.5) * (20 + i * 14),
-                     duration: 1.1, ease: "power2.out" });
+     The chrome cursor and its sparkle trail used to live here. They
+     are gone; the native pointer is back. Sphere parallax and the
+     click ripple stayed — they are their own features, not cursor
+     decoration.
+     --------------------------------------------------------- */
+  pointerFx() {
+    if (REDUCED) return;
+
+    if (!window.matchMedia("(hover: none)").matches) {
+      window.addEventListener("pointermove", (e) => {
+        $$(".sphere").forEach((s, i) => {
+          gsap.to(s, { x: (e.clientX / window.innerWidth - 0.5) * (20 + i * 14),
+                       duration: 1.1, ease: "power2.out" });
+        });
       });
-    });
-    document.addEventListener("pointerover", (e) => {
-      dot.classList.toggle("is-big", !!e.target.closest("a, button, .card"));
-    });
+    }
+
     window.addEventListener("pointerdown", (e) => T.ripple(e.clientX, e.clientY));
   },
 

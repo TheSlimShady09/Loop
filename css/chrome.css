@@ -97,30 +97,6 @@ button { font: inherit; color: inherit; }
 .fx-sparkle { width: 110px; }
 
 /* ============================================================
-   cursor
-   ============================================================ */
-body.has-cursor { cursor: none; }
-body.has-cursor a,
-body.has-cursor button { cursor: none; }
-/* The outer node is moved by GSAP; the dot inside scales on its
-   own transform, so hovering never touches layout. */
-.cursor {
-  position: fixed; top: 0; left: 0; z-index: 980;
-  width: 0; height: 0;
-  pointer-events: none;
-}
-.cursor__dot {
-  position: absolute; top: -27px; left: -27px;
-  width: 54px; height: 54px;
-  border-radius: 50%;
-  background: var(--chrome);
-  mix-blend-mode: difference;
-  transform: scale(0.407);
-  transition: transform 0.25s var(--ease);
-}
-.cursor.is-big .cursor__dot { transform: scale(1); }
-
-/* ============================================================
    loader
    ============================================================ */
 .loader {
@@ -424,6 +400,4 @@ body.has-cursor button { cursor: none; }
   * { animation-duration: 0.001ms !important; transition-duration: 0.001ms !important; }
   .reveal { opacity: 1; transform: none; }
   .sphere { display: none; }
-  body.has-cursor { cursor: auto; }
-  .cursor { display: none; }
 }
